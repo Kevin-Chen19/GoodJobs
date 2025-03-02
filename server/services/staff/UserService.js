@@ -27,6 +27,15 @@ const UserService = {
   getCurriculum:async({username})=>{
     console.log("用户名：",username)
     return curriculumModel.find({username})
+  },
+  addAducation:async({username,education})=>{
+    return curriculumModel.updateOne({username},{$push:{education}})
+  },
+  updateBase:async({username,name,age,sex,status,address,email,phone})=>{
+    return curriculumModel.updateOne({username},{$set:{name,age,sex,status,address,email,phone}})
+  },
+  updatejobStatus:async({username,jobStatus})=>{
+    return curriculumModel.updateOne({username},{$set:{jobStatus}})
   }
 }
 module.exports = UserService

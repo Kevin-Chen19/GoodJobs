@@ -49,6 +49,24 @@ getCurriculum:async(req,res)=>{
     ActionType:"ok",
     data:result
   })
+},
+addAducation:async(req,res)=>{
+  await UserService.addAducation(req.body);
+  res.send({
+    ActionType:"ok"
+  })
+},
+updateBase:async(req,res)=>{
+  await UserService.updateBase(req.body);
+  res.send({
+    ActionType:"ok"
+  })
+},
+updatejobStatus:async(req,res)=>{
+  await UserService.updatejobStatus(req.body);
+  res.send({
+    ActionType:"ok"
+  })
 }
 }
 
