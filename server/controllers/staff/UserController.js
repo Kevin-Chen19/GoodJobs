@@ -2,7 +2,6 @@ const UserService = require("../../services/staff/UserService");
 const JWT = require("../../util/JWT");
 const UserController = {
   login:async(req,res)=>{
-    console.log("获取的数据：",req.body);
    var result = await UserService.login(req.body);
    if(result.success===false){
     if(result.code===0){
@@ -36,6 +35,20 @@ register:async(req,res)=>{
       res.send({
       ActionType:"ok"
     })
+},
+curriculum:async(req,res)=>{
+  await UserService.curriculum(req.body);
+  res.send({
+    ActionType:"ok"
+  })
+},
+getCurriculum:async(req,res)=>{
+  const {username} = req.params
+  const result = await UserService.getCurriculum({username});
+  res.send({
+    ActionType:"ok",
+    data:result
+  })
 }
 }
 

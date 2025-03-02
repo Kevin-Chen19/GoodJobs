@@ -34,15 +34,24 @@
           <el-input v-model="ruleForm.subject"  placeholder="请输入专业名称"/>
         </el-form-item>
         <el-form-item label="在校时间" prop="times">
-          <div class="demo-date-picker">
-            <div class="block">
-              <el-date-picker
-                v-model="ruleForm.times"
-                type="daterange"
-                start-placeholder="入学时间"
-                end-placeholder="毕业时间"
-              />
-            </div>
+          <div style="display: flex;">
+            <el-date-picker
+              v-model="ruleForm.times[0]"
+              type="date"
+              placeholder="入学时间"
+              :size="large"
+              @change="ifGet = false"
+              @clear="clearChange"
+            />
+            <el-date-picker
+              v-model="ruleForm.times[1]"
+              type="date"
+              placeholder="毕业时间"
+              :disabled = "ifGet"
+              :disabled-date="disabledDate"
+              :shortcuts="shortcuts"
+              :size="large"
+            />
           </div>
         </el-form-item>
         <el-form-item>
@@ -54,24 +63,49 @@
   </div>
 </template>
 <script setup>
-import {ref, reactive} from 'vue'
+import {ref, reactive, defineEmits} from 'vue'
+import moment from 'moment'
+const emit = defineEmits(['sbmitForm'])
 const ruleFormRef = ref();
+const ifGet = ref(true)
 const eduArray = ["初中及以下","高中","中专/中技","大专","本科","硕士","博士"]
+const clearChange = () => {
+  ifGet.value = true
+  ruleForm.times = []
+
+}
+const disabledDate = (time) => {
+  return time.getTime() < ruleForm.times[0]
+}
 const ruleForm = reactive({
   schoolName: '',
   eduBag: '',
   tongZhao: '统招',
   degree: '有',
   subject: '',
-  times: ''
+  times: []
 })
 const rules = reactive({
   schoolName: [{ required: true, message: '请输入学校名称', trigger: 'blur' }],
   eduBag: [{ required: true, message: '请输入最高学历', trigger: 'blur' }],
   tongZhao: [{ required: true, message: '请输入是否统招', trigger: 'blur' }],
   degree: [{ required: true, message: '请输入学位证书', trigger: 'blur' }], 
-  subject: [{ required: true, message: '请输入所学专业', trigger:'blur' }] 
+  subject: [{ required: true, message: '请输入所学专业', trigger:'blur' }] ,
+  times: [{ required: true, message: '请选择在校时间', trigger: 'blur' }],
 })
+const submitForm = () => {
+  ruleFormRef.value.validate((valid) => {
+    if (valid) {
+      ruleForm.times[1] = moment(ruleForm.times[1]).format('YYYY/MM/DD')
+      ruleForm.times[0] = moment(ruleForm.times[0]).format('YYYY/MM/DD')
+      console.log('submit!', ruleForm);
+      emit('sbmitForm', ruleForm)
+    } else {
+      console.log('error submit!!');
+      return false;
+    }
+  });
+}
 </script>
 <style lang="scss" scoped>
 .tips{

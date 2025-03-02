@@ -1,4 +1,5 @@
 const userModel = require("../../models/UserModel");
+const curriculumModel = require("../../models/curriculumVitae");
 const UserService = {
   login:async({username,password})=>{
     // 首先查找用户名是否存在
@@ -18,5 +19,14 @@ const UserService = {
   register:async({username,password,role})=>{
     return userModel.create({username,password,role})
   },
+  curriculum:async({username,name,age,sex,status,address,email,phone,jobStatus,jobKinds,jobCity,salary,jobType,education})=>{
+    // 将 education 转换为数组形式
+    const educationArray = [education];
+    return curriculumModel.create({username,name,age,sex,status,address,email,phone,jobStatus,jobKinds,jobCity,salary,jobType,education:educationArray})
+  },
+  getCurriculum:async({username})=>{
+    console.log("用户名：",username)
+    return curriculumModel.find({username})
+  }
 }
 module.exports = UserService

@@ -6,21 +6,21 @@
         <div class="Avatar"><img src="../../assets/默认图像.png" alt=""></div>
         <div class="baseMess">
           <div class="name_Edit">
-            <div class="name">{{ PersonMessage.name }}</div>
+            <div class="name">{{ personMessage.name }}</div>
             <div class="edit">编辑</div>
           </div>
           <div class="personTags">
-            <p>{{ PersonMessage.sex }}</p>
+            <p>{{ personMessage.sex }}</p>
             <p class="col">|</p>
-            <p>{{ PersonMessage.age }}</p>
+            <p>{{ personMessage.age }}岁</p>
             <p class="col">|</p>
-            <p>{{ PersonMessage.address }}</p>
+            <p>{{ personMessage.address }}</p>
             <p class="col">|</p>
-            <p>{{ PersonMessage.status }}</p>
+            <p>{{ personMessage.status }}</p>
           </div>
           <div class="phone_Emil">
-            <p>手机：{{ PersonMessage.phone }}</p>
-            <p>邮箱：{{ PersonMessage.emil }}</p>
+            <p>手机：{{ personMessage.phone }}</p>
+            <p>邮箱：{{ personMessage.email }}</p>
           </div>
         </div>
       </div>
@@ -29,20 +29,25 @@
           <div class="title"><img src="../../icons/求职状态.png">求职状态</div>
           <div class="edit">编辑</div>
         </div>
-        <div class="status">{{ PersonMessage.jobStatus }}</div>
+        <div class="status">{{personMessage.jobStatus ? personMessage.jobStatus[0]+"---"+personMessage.jobStatus[1] : ""}}</div>
       </div>
       <div class="MessageItem" id="part3">
         <div class="itemTop">
           <div class="title"><img src="../../icons/教育经历.png">教育经历</div>
-          <div class="additems">+ 添加教育经历</div>
+          <div class="additems" @click="selects(0)">+ 添加教育经历</div>
         </div>
-        <div class="educations" v-for="(item , index) in PersonMessage.education">
-          <div>{{ item.school }}</div>
-          <p>{{ item.major }}</p>
-          <p class="col">|</p>
-          <p>{{ item.education }}</p>
-          <p>{{item.studyTime}}</p>
-          <p class="edit">编辑</p>
+        <div class="educations" v-for="(item , index) in personMessage.education">
+          <div class="scoo">{{ item.schoolName }}</div>
+          <div class="edub">
+            <div class="ttm">
+              <p>{{ item.eduBag }}</p>
+              <p class="col">|</p>
+              <p>{{ item.subject }}</p>
+              <p>{{item.times[0]+"--"+item.times[1]}}</p>
+            </div>
+            <p class="edit1">编辑</p>
+          </div>
+          
         </div>
       </div>
       <div class="MessageItem"id="part4">
@@ -50,11 +55,11 @@
           <div class="title"><img src="../../icons/求职意向.png">求职意向</div>
           <div class="edit">编辑</div>
         </div>
-        <div class="jobKinds"><p>{{ arrayString(PersonMessage.jobsWant.jobKinds) }}</p></div>
+        <div class="jobKinds"><p>{{personMessage.jobKinds ? arrayString(personMessage.jobKinds) : "" }}</p></div>
         <div class="jobRequest">
-          <div class="items">薪资要求：{{ PersonMessage.jobsWant.salary }}</div>
-          <div class="items">期望城市：{{ arrayString(PersonMessage.jobsWant.jobCity) }}</div>
-          <div class="items">工作性质：{{ arrayString(PersonMessage.jobsWant.jobType) }}</div>
+          <div class="items">薪资要求：{{ personMessage.salary }}</div>
+          <div class="items">期望城市：{{personMessage.jobCity ? arrayString(personMessage.jobCity) : ""}}</div>
+          <div class="items">工作性质：{{personMessage.jobType ? arrayString(personMessage.jobType)  : "" }}</div>
         </div>
       </div>
       <div class="MessageItem" id="part5">
@@ -62,14 +67,14 @@
           <div class="title"><img src="../../icons/个人优势.png">个人优势</div>
           <div class="edit">编辑</div>
         </div>
-        <div class="introduction">{{ PersonMessage.introduction }}</div>
+        <div class="introduction">{{ personMessage.introduction }}</div>
       </div>
       <div class="MessageItem" id="part6">
         <div class="itemTop">
           <div class="title"><img src="../../icons/工作经历.png">工作/实习经历</div>
           <div class="additems">+ 添加工作经验</div>
         </div>
-        <div class="jobExperience" v-for="(item,index) in PersonMessage.experience" @mouseenter="hover(0)" @mouseleave="outHover(0)">
+        <div class="jobExperience" v-for="(item,index) in personMessage.experience" @mouseenter="hover(0)" @mouseleave="outHover(0)">
           <div class="company_time">
             <p class="company">{{ item.company }}</p>
             <p v-if="!hoverWitch[0]">{{ item.workTime }}</p>
@@ -91,7 +96,7 @@
           <div class="title"><img src="../../icons/项目经历.png">项目经历</div>
           <div class="additems">+ 添加项目经历</div>
         </div>
-        <div class="jobExperience" v-for="(item,index) in PersonMessage.projects" @mouseenter="hover(1)" @mouseleave="outHover(1)">
+        <div class="jobExperience" v-for="(item,index) in personMessage.projects" @mouseenter="hover(1)" @mouseleave="outHover(1)">
           <div class="company_time">
             <p class="company">{{ item.name }}</p>
             <p v-if="!hoverWitch[1]">{{ item.time }}</p>
@@ -106,7 +111,7 @@
           <div class="title"><img src="../../icons/证书荣誉.png">证书荣誉</div>
           <div class="additems">+ 添加荣誉证书</div>
         </div>
-        <p class="honorary" v-for="(item,index) in PersonMessage.honorary">{{ item }} <img src="../../icons//删除.png"></p>
+        <p class="honorary" v-for="(item,index) in personMessage.honorary">{{ item }} <img src="../../icons//删除.png"></p>
       </div>
     </div>
       <div class="right">
@@ -131,60 +136,29 @@
       </div>
     </div>
   </div>
+  <el-dialog
+    v-model="centerDialogVisible"
+    width="850"
+    align-center
+  >
+    <education v-if=" selectWhich === 0 " @sbmitForm="getAducations"></education>
+  </el-dialog>
   <backTop></backTop>
   <div style="height: 40px;"></div>
   <bottom></bottom>
 </template>
 
 <script setup>
-  import { ref } from 'vue'
   import backTop from '../../components/backTop.vue'
   import bottom from '@/components/bottom.vue'
-import { reactive } from 'vue'
+  import Education from '@/components/personMessage/Education.vue'
+  import {ref, reactive, onMounted } from 'vue'
+  import axios from 'axios'
+  import store from '@/store'
   const hoverWitch = reactive([false,false,false])
-  const PersonMessage = {
-    name: '陈大帅',
-    age: 20,
-    sex: '男',
-    phone: '13888888888',
-    emil: '3187538117@qq.com',
-    address:'株洲',
-    status:'26年应届生',
-    jobStatus:'在校-正在找工作',
-    jobsWant:{
-      jobKinds:['前端开发','web前端'],
-      salary:'6000-12000元/月',
-      jobType:['全职','实习'],
-      jobCity:['长沙','株洲','湘潭']
-    },
-    education:[{
-      school:'湖南科技大学',
-      major:'软件工程',
-      education:'本科',
-      studyTime:'2022.9-2026.7'
-    },{
-      school:'清华大学',
-      major:'软件工程',
-      education:'硕士',
-      studyTime:'2026.9-2029.7'
-    }],
-    introduction:'我是一个很帅的人',
-    experience:[{
-      company:'湘潭凝智互联网科技责任有限公司',
-      jobName:'前端开发工程师',
-      workTime:'2022.9-2026.7',
-      salary:'12000元/月',
-      jobKind:'前端开发工程师',
-      ablilty:'熟练掌握HTML、CSS、JavaScript、Vue、React、Node.js、Webpack、Git等前端开发技术',
-      workRole:'负责公司官网、后台管理系统、小程序的开发'
-    }],
-    projects:[{
-      name:'科科校易取微信小程序开发',
-      time:'2024.7-2024.9',
-      workRole:'独自运用腾讯云开发实现高校快递代取业务的设计，开发，并成功上线且有稳定实践运营。'
-    }],
-    honorary:["大学英语四级","大学英语六级","软件工程师中级"]
-  }
+  let personMessage = reactive({})
+  const selectWhich = ref(0);
+  const centerDialogVisible = ref(false);
   const arrayString = (array) => {
     return array.join('、');
   }
@@ -200,6 +174,30 @@ const hover = (index) => {
 const outHover = (index) => {
   hoverWitch[index] = false
 }
+const selects = (num)=>{
+  selectWhich.value = num;
+  centerDialogVisible.value = true;
+}
+const getPersonMessage = () =>{
+  axios.get("/staffapi/user/getCurriculum/"+store.state.userInfo.username).then(res=>{
+    console.log(res)
+    if(res.data.ActionType === 'ok'){
+    /*reactive 的使用:
+    reactive 创建的响应式对象不能直接重新赋值，否则会失去响应性。
+    通过 Object.assign 或手动赋值的方式更新对象的属性。*/
+      // 将返回的数据合并到 personMessage 中
+      Object.assign(personMessage, res.data.data[0]);
+      console.log(personMessage);
+    }
+  })
+}
+const getAducations = (value) => {
+  centerDialogVisible.value = false;
+  console.log("education",value)
+}
+onMounted(() => {
+  getPersonMessage()
+})
 </script>
 <style lang="scss" scoped>
 .topLine{
@@ -325,9 +323,18 @@ const outHover = (index) => {
   display: flex;
   margin-bottom: 20px;
   color: rgba(21, 21, 21, 0.714);
-  div{
+  .scoo{
     width: 30%;
     font-size: larger;
+  }
+  .edub{
+    width: 70%;
+    display: flex;
+    justify-content: space-between;
+    .ttm{
+      width: 70%;
+      display: flex;
+    }
   }
   p{
     font-size: medium;
@@ -336,6 +343,10 @@ const outHover = (index) => {
   .edit{
     margin-left: 29%;
     color: rgba(21, 21, 234, 0.632);
+  }
+  .edit1{
+    color: rgba(21, 21, 234, 0.632);
+    cursor: pointer;
   }
 }
 .jobKinds{

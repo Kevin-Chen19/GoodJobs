@@ -40,8 +40,8 @@
         </el-form-item>
         </el-col>
         <el-col :span="12">
-           <el-form-item label="邮箱" prop="emil">
-          <el-input v-model="ruleForm.emil"/> 
+           <el-form-item label="邮箱" prop="email">
+          <el-input v-model="ruleForm.email"/> 
         </el-form-item>
         </el-col>
         <el-col :span="12">
@@ -85,7 +85,7 @@
         </el-col>
         <el-col :span="12">
           <el-form-item label="教育经历" prop="education">
-          <el-input v-model="ruleForm.education" @click="selectCity(2)"/> 
+          <div class="inputBox" @click="selectCity(2)">{{ educationShow }}</div>
         </el-form-item>
         </el-col>
       </el-row>
@@ -106,7 +106,7 @@
   >
     <moreJobKinds v-if=" selectWhich === 0 "  @selectKinds="getKinds" @cancelKinds="cancel"></moreJobKinds>
     <moreAddress v-if=" selectWhich === 1 "  @selectAdd="getAddress" @cancelAdd="cancel"></moreAddress>
-    <education v-if=" selectWhich === 2 "></education>
+    <education v-if=" selectWhich === 2 " @sbmitForm="getAducations"></education>
   </el-dialog>
 </template>
 <script setup>
@@ -114,12 +114,16 @@ import navTop from '../../components/navTop.vue';
 import moreAddress from '@/components/moreAddress.vue';
 import moreJobKinds from '@/components/moreJobKinds.vue';
 import education from '@/components/personMessage/Education.vue';
+import { useRouter } from 'vue-router';
 import { reactive, ref, h} from 'vue';
 import { ElNotification } from 'element-plus'
-const selectWhich = ref(2);
+import store from '@/store';
+import axios from 'axios';
+const router = useRouter();
+const selectWhich = ref(0);
 const ifEdit = ref(false);
 const ruleFormRef = ref();
-const centerDialogVisible = ref(true);
+const centerDialogVisible = ref(false);
 const sexArry = ['男','女'];
 const props = {
   expandTrigger: 'hover',
@@ -159,28 +163,29 @@ const statusOptions = [
   }
 ]
 const ruleForm = reactive({
+  username:store.state.userInfo.username,
   name: '',
   age: '',
   sex: '',
   status: '',
   address: '',
-  emil: '',
+  email: '',
   phone: '',
   jobStatus: '',
   jobKinds: [],
   jobCity: [],
   salary: '',
   jobType: [],
-  education: ''
+  education: {}
 })
-
+const educationShow =ref("") 
 const rules = reactive({
   name:[{ required: true, message: '请输入姓名', trigger: 'blur' }],
   age:[{ required: true, message: '请输入年龄', trigger: 'blur' }],
   sex:[{ required: true, message: '请输入性别', trigger: 'blur' }],
   status:[{ required: true, message: '请输入身份', trigger: 'blur' }],
   address:[{ required: true, message: '请输入现居住城市', trigger: 'blur' }],
-  emil:[{ required: true, message: '请输入邮箱', trigger: 'blur' }],
+  email:[{ required: true, message: '请输入邮箱', trigger: 'blur' }],
   phone:[{ required: true, message: '请输入电话', trigger: 'blur' }],
   jobStatus:[{ required: true, message: '请输入求职状态', trigger: 'blur' }],
   jobKinds:[{ required: true, message: '请输入期望职位', trigger: 'blur' }],
@@ -204,9 +209,9 @@ const getKinds = (value)=>{
   console.log(ruleForm.jobKinds)
 }
 //邮箱地址的正则验证
-const validateEmail = (emil) => {
+const validateEmail = (email) => {
   const reg = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
-  if(!reg.test(emil)){
+  if(!reg.test(email)){
     openError(0)
     return false;
   }else{
@@ -236,11 +241,25 @@ const openError = (num) => {
     })
   }
 }
+const getAducations = (value) => {
+  centerDialogVisible.value = false;
+  ruleForm.education = value
+  educationShow.value = ruleForm.education.schoolName+"-"+ruleForm.education.subject
+  console.log("education",ruleForm.education)
+}
 const submitForm = () => {
   ruleFormRef.value.validate((valid) => {
     if (valid) {
-      if(validateEmail(ruleForm.emil) && validatePhone(ruleForm.phone)){
+      if(validateEmail(ruleForm.email) && validatePhone(ruleForm.phone)){
         console.log('submit!', ruleForm);
+        axios.post('/staffapi/user/curriculum',ruleForm).then(res=>{
+          if(res.data.ActionType === "ok"){
+            console.log("提交成功")
+            router.push('/person')
+          }else{
+            console.log("提交失败")
+          }
+        })
       }
     } else {
       console.log('error submit!!');
@@ -271,6 +290,15 @@ const submitForm = () => {
 }
 .el-row{
   flex-wrap: wrap;
+}
+.inputBox{
+  width: 200px;
+  height: 30px;
+  border: 1.5px solid #e3e2e2af;
+  border-radius: 5px;
+  line-height: 30px;
+  padding:0 5px;
+  overflow: hidden;
 }
 input{
   width: 200px;
