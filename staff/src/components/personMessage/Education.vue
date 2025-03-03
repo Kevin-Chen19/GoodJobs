@@ -55,19 +55,28 @@
         </div>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="submitForm()" class="subbtn">
+        <el-button v-if="!ifEdit" type="primary" @click="submitForm()" class="subbtn">
           提交
+        </el-button>
+        <el-button v-if="ifEdit" type="primary" @click="editForm" class="subbtn">
+          确认修改
+        </el-button>
+        <el-button v-if="ifEdit" type="danger" @click="deleteItem" class="subbtn">
+          删除该经历
         </el-button>
       </el-form-item>
     </el-form>
   </div>
 </template>
 <script setup>
-import { ref, reactive, defineEmits, onMounted, watch } from "vue";
+import { ref, reactive, defineEmits, watch } from "vue";
 import moment from "moment";
+import axios from "axios";
+import store from "@/store";
 const emit = defineEmits(["sbmitForm"]);
 const ruleFormRef = ref();
 const ifGet = ref(true);
+const ifEdit = ref(false);
 const eduArray = [
   "初中及以下",
   "高中",
@@ -95,13 +104,12 @@ const ruleForm = reactive({
 const props = defineProps({
   personMessage: {
     type: Object,
-    default: () => {
-      education: [];
-    }, // 默认值
+    default: () => {}, // 默认值
   },
   index: {
     type: Number,
-    required: true, // 确保 index 是必传的
+    required: true, 
+    default:() => -1// 确保 index 是必传的
   },
 });
 const rules = reactive({
@@ -110,27 +118,66 @@ const rules = reactive({
   tongZhao: [{ required: true, message: "请输入是否统招", trigger: "blur" }],
   degree: [{ required: true, message: "请输入学位证书", trigger: "blur" }],
   subject: [{ required: true, message: "请输入所学专业", trigger: "blur" }],
-  times: [{ required: true, message: "请选择在校时间", trigger: "blur" }],
+  times: [{ required: true, message: "请选择在校时间", trigger: "blur" }]
 });
+//添加教育经历
 const submitForm = () => {
   ruleFormRef.value.validate((valid) => {
     if (valid) {
       ruleForm.times[1] = moment(ruleForm.times[1]).format("YYYY/MM/DD");
       ruleForm.times[0] = moment(ruleForm.times[0]).format("YYYY/MM/DD");
       console.log("submit!", ruleForm);
-      emit("sbmitForm", ruleForm);
+      let username = store.state.userInfo.username;
+      let education = ruleForm;
+      axios.post("/staffapi/user/curriculum/addAducation", { username, education }).then((res) => {
+      if (res.data.ActionType === "ok") {
+        emit("sbmitForm", "ok");
+      }
+    });
     } else {
       console.log("error submit!!");
       return false;
     }
   });
 };
+//修改教育经历
+const editForm = () => {
+  ruleFormRef.value.validate((valid) => {
+    if (valid) {
+      ruleForm.times[1] = moment(ruleForm.times[1]).format("YYYY/MM/DD");
+      ruleForm.times[0] = moment(ruleForm.times[0]).format("YYYY/MM/DD");
+      console.log("修改!", ruleForm);
+      let username = store.state.userInfo.username;
+      let index = props.index;
+      axios.post("/staffapi/user/curriculum/updateAducation",{username,index,education:ruleForm}).then((res)=>{
+        if(res.data.ActionType === "ok"){
+          emit("sbmitForm", "ok");
+        }
+      })
+    } else {
+      console.log("error submit!!");
+      return false;
+    }
+  });
+};
+//删除教育经历
+const deleteItem = ()=>{
+  console.log("删除",props.index)
+  let username = store.state.userInfo.username;
+  let index = props.index;
+  axios.post("/staffapi/user/curriculum/deleteAducation",{username,index}).then((res)=>{
+    if(res.data.ActionType === "ok"){
+      emit("sbmitForm", "ok");
+    }
+  })
+}
 watch(
   () => props.index, // 监听 index 的变化
   (newIndex) => {
     console.log("index 变化:", newIndex);
     // 在这里执行你的逻辑
     if (props.index !== -1) {
+      ifEdit.value = true;
       let index = props.index;
       ruleForm.schoolName = props.personMessage.education[index].schoolName;
       ruleForm.eduBag = props.personMessage.education[index].eduBag;
@@ -141,22 +188,18 @@ watch(
         props.personMessage.education[index].times[0],
         props.personMessage.education[index].times[1],
       ];
+    }else{
+      ifEdit.value = false;
+      ruleForm.schoolName = "";
+      ruleForm.eduBag = "";
+      ruleForm.tongZhao = "统招";
+      ruleForm.degree = "有";
+      ruleForm.subject = "";
+      ruleForm.times = [];
     }
   },
   { immediate: true } // 立即执行一次
 );
-/*onMounted(() => {
-  console.log(props)
-  if(props.index !== -1){
-    let index = props.index
-    ruleForm.schoolName = props.personMessage.education[index].schoolName
-    ruleForm.eduBag = props.personMessage.education[index].eduBag
-    ruleForm.tongZhao = props.personMessage.education[index].tongZhao
-    ruleForm.degree = props.personMessage.education[index].degree
-    ruleForm.subject = props.personMessage.education[index].subject
-    ruleForm.times = [props.personMessage.education[index].times[0],props.personMessage.education[index].times[1]]
-  }
-})*/
 </script>
 <style lang="scss" scoped>
 .tips {

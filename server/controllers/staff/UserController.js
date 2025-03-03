@@ -67,6 +67,42 @@ updatejobStatus:async(req,res)=>{
   res.send({
     ActionType:"ok"
   })
+},
+deleteAducation:async(req,res)=>{
+  await UserService.deleteAducation(req.body);
+  res.send({
+    ActionType:"ok"
+  })
+},
+updateAducation:async(req,res)=>{
+  await UserService.updateAducation(req.body);
+  res.send({
+    ActionType:"ok"
+  })
+},
+updateJobWant:async(req,res)=>{
+  await UserService.updateJobWant(req.body);
+  res.send({
+    ActionType:"ok"
+  })
+},
+updateIntroduction:async(req,res)=>{
+  await UserService.updateIntroduction(req.body);
+  res.send({
+    ActionType:"ok"
+  })
+},
+addHonorary:async(req,res)=>{
+  await UserService.addHonorary(req.body);
+  res.send({
+    ActionType:"ok"
+  })
+},
+deleteHonorary:async(req,res)=>{
+  await UserService.deleteHonorary(req.body);
+  res.send({
+    ActionType:"ok"
+  })
 }
 }
 

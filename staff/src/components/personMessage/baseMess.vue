@@ -60,7 +60,8 @@
 <script setup>
 import { ref, reactive ,defineEmits,h ,onMounted} from 'vue';
 import { ElNotification } from 'element-plus';
-const emit = defineEmits(['pubBaseMess']);
+import axios from 'axios';
+const emit = defineEmits(['sbmitForm']);
 const ruleFormRef = ref();
 const sexArry = ['男','女'];
 const ruleForm = reactive({
@@ -126,9 +127,13 @@ const submitForm = () => {
   ruleFormRef.value.validate((valid) => {
     if (valid) {
       if(validateEmail(ruleForm.email) && validatePhone(ruleForm.phone)){
-        emit('pubBaseMess',ruleForm)
-      }  
-    } else {
+        axios.post("/staffapi/user/curriculum/updateBase", ruleForm).then((res) => {
+        if (res.data.ActionType === "ok") {
+            emit('sbmitForm',"ok")
+          }  
+        })
+      }
+    }else {
       console.log('error submit!!');
       return false;
     }

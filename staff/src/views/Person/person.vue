@@ -44,7 +44,7 @@
           <div class="title">
             <img src="../../icons/教育经历.png" />教育经历
           </div>
-          <div class="additems" @click="selects(0)">+ 添加教育经历</div>
+          <div class="additems" @click="(selectSome = -1 , selects(0) )">+ 添加教育经历</div>
         </div>
         <div
           class="educations"
@@ -58,7 +58,7 @@
               <p>{{ item.subject }}</p>
               <p>{{ item.times[0] + "--" + item.times[1] }}</p>
             </div>
-            <p class="edit1" @click="(selectSome = index , selects(3) )">编辑</p>
+            <p class="edit1" @click="(selectSome = index , selects(0) )">编辑</p>
           </div>
         </div>
       </div>
@@ -67,7 +67,7 @@
           <div class="title">
             <img src="../../icons/求职意向.png" />求职意向
           </div>
-          <div class="edit">编辑</div>
+          <div class="edit" @click="selects(4)">编辑</div>
         </div>
         <div class="jobKinds">
           <p>
@@ -95,7 +95,7 @@
           <div class="title">
             <img src="../../icons/个人优势.png" />个人优势
           </div>
-          <div class="edit">编辑</div>
+          <div class="edit" @click="selects(5)">编辑</div>
         </div>
         <div class="introduction">{{ personMessage.introduction }}</div>
       </div>
@@ -155,10 +155,10 @@
           <div class="title">
             <img src="../../icons/证书荣誉.png" />证书荣誉
           </div>
-          <div class="additems">+ 添加荣誉证书</div>
+          <div class="additems" @click="selects(3)">+ 添加荣誉证书</div>
         </div>
         <p class="honorary" v-for="(item, index) in personMessage.honorary">
-          {{ item }} <img src="../../icons//删除.png" />
+          {{ item }} <img src="../../icons//删除.png"  @click="deleteHonorary(index)"/>
         </p>
       </div>
     </div>
@@ -190,23 +190,30 @@
   </div>
   <el-dialog v-model="centerDialogVisible" width="850" align-center>
     <education v-if="selectWhich === 0" :personMessage="personMessage"
-    :index=-1 @sbmitForm="PubAducations"></education>
+    :index=selectSome @sbmitForm="refreshMessage"></education>
     <baseMess
       v-if="selectWhich === 1"
       :personMessage="personMessage"
-      @pubBaseMess="PubBaseMess"
+      @sbmitForm="refreshMessage"
     ></baseMess>
     <jobStatusMess
       v-if="selectWhich === 2"
       :personMessage="personMessage"
       @pubJobStatusMess="pubJobStatusMess"
     ></jobStatusMess>
-    <education
-      v-if="selectWhich === 3"
-      :personMessage="personMessage"
-      :index="selectSome"
-      @updateEducation="updateEducation"
-    ></education>
+    <honorary
+    v-if="selectWhich === 3" 
+    @sbmitForm="refreshMessage"
+    ></honorary>
+    <jobsWant v-if="selectWhich === 4"
+    :personMessage="personMessage"
+    @sbmitForm="refreshMessage"
+    ></jobsWant>
+    <introduction
+    v-if="selectWhich === 5"
+    :personMessage="personMessage"
+    @sbmitForm="refreshMessage"
+    ></introduction>
   </el-dialog>
   <backTop></backTop>
   <div style="height: 40px"></div>
@@ -219,13 +226,16 @@ import bottom from "@/components/bottom.vue";
 import Education from "@/components/personMessage/Education.vue";
 import baseMess from "@/components/personMessage/baseMess.vue";
 import jobStatusMess from "@/components/personMessage/jobStatusMess.vue";
+import jobsWant from "@/components/personMessage/jobsWant.vue";
+import introduction from "@/components/personMessage/introduction.vue";
+import honorary from "@/components/personMessage/honorary.vue";
 import { ref, reactive, onMounted } from "vue";
 import axios from "axios";
 import store from "@/store";
 const hoverWitch = reactive([false, false, false]);
 let personMessage = reactive({});
 const selectWhich = ref(1);
-const selectSome = ref(0);
+const selectSome = ref(-1);
 const centerDialogVisible = ref(false);
 const arrayString = (array) => {
   return array.join("、");
@@ -261,15 +271,6 @@ const getPersonMessage = () => {
       }
     });
 };
-const PubBaseMess = (value) => {
-  console.log("baseMess", value);
-  centerDialogVisible.value = false;
-  axios.post("/staffapi/user/curriculum/updateBase", value).then((res) => {
-    if (res.data.ActionType === "ok") {
-      getPersonMessage();
-    }
-  });
-};
 const pubJobStatusMess = (value) => {
   console.log("jobStatusMess", value);
   centerDialogVisible.value = false;
@@ -279,18 +280,17 @@ const pubJobStatusMess = (value) => {
     }
   });
 };
-const PubAducations = (value) => {
+const deleteHonorary = (index)=>{
+  axios.post("/staffapi/user/curriculum/deleteHonorary",{username:personMessage.username,index}).then((res)=>{
+    if(res.data.ActionType === "ok"){
+      getPersonMessage();
+    }
+  })
+}
+const refreshMessage = () => {
   centerDialogVisible.value = false;
-  let education = value;
-  let username = store.state.userInfo.username;
-  console.log("education", education);
-  axios
-    .post("/staffapi/user/curriculum/addAducation", { username, education })
-    .then((res) => {
-      if (res.data.ActionType === "ok") {
-        getPersonMessage();
-      }
-    });
+  getPersonMessage();
+
 };
 onMounted(() => {
   getPersonMessage();

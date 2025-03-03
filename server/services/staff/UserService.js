@@ -36,6 +36,44 @@ const UserService = {
   },
   updatejobStatus:async({username,jobStatus})=>{
     return curriculumModel.updateOne({username},{$set:{jobStatus}})
-  }
+  },
+  deleteAducation:async({username,index})=>{
+     // 第一步：将指定索引位置的元素设置为 null
+  await curriculumModel.updateOne(
+    { username },
+    { $unset: { [`education.${index}`]: 1 } }
+  );
+  // 第二步：移除数组中所有值为 null 的元素
+  await curriculumModel.updateOne(
+    { username },
+    { $pull: { education: null } }
+  );
+  return await curriculumModel.findOne({ username });
+},
+updateAducation:async({username,index,education})=>{
+  return curriculumModel.updateOne({username},{$set:{[`education.${index}`]:education}})
+},
+updateJobWant:async({username,jobKinds,jobCity,salary,jobType})=>{
+  return curriculumModel.updateOne({username},{$set:{jobKinds,jobCity,salary,jobType}})
+},
+updateIntroduction:async({username,introduction})=>{
+  return curriculumModel.updateOne({username},{$set:{introduction}})
+},
+addHonorary:async({username,honorary})=>{
+  return curriculumModel.updateOne({username},{$push:{honorary}})
+},
+deleteHonorary:async({username,index})=>{
+  // 第一步：将指定索引位置的元素设置为 null
+await curriculumModel.updateOne(
+  { username },
+  { $unset: { [`honorary.${index}`]: 1 } }
+);
+// 第二步：移除数组中所有值为 null 的元素
+await curriculumModel.updateOne(
+  { username },
+  { $pull: { honorary: null } }
+);
+return await curriculumModel.findOne({ username });
+}
 }
 module.exports = UserService
