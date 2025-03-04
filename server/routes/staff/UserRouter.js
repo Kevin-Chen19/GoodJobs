@@ -15,4 +15,10 @@ staffUserRouter.post("/staffapi/user/curriculum/updateJobWant",UserController.up
 staffUserRouter.post("/staffapi/user/curriculum/updateIntroduction",UserController.updateIntroduction);
 staffUserRouter.post("/staffapi/user/curriculum/addHonorary",UserController.addHonorary);
 staffUserRouter.post("/staffapi/user/curriculum/deleteHonorary",UserController.deleteHonorary);
+staffUserRouter.post("/staffapi/user/curriculum/addExperience",UserController.addExperience);
+staffUserRouter.post("/staffapi/user/curriculum/updateExperience",UserController.updateExperience);
+staffUserRouter.post("/staffapi/user/curriculum/deleteExperience",UserController.deleteExperience);
+staffUserRouter.post("/staffapi/user/curriculum/addProjects",UserController.addProjects);
+staffUserRouter.post("/staffapi/user/curriculum/updateProjects",UserController.updateProjects);
+staffUserRouter.post("/staffapi/user/curriculum/deleteProjects",UserController.deleteProjects);
 module.exports = staffUserRouter;

@@ -103,6 +103,42 @@ deleteHonorary:async(req,res)=>{
   res.send({
     ActionType:"ok"
   })
+},
+addExperience:async(req,res)=>{
+  await UserService.addExperience(req.body);
+  res.send({
+    ActionType:"ok"
+  })
+},
+updateExperience:async(req,res)=>{
+  await UserService.updateExperience(req.body);
+  res.send({
+    ActionType:"ok"
+  })
+},
+deleteExperience:async(req,res)=>{
+  await UserService.deleteExperience(req.body);
+  res.send({
+    ActionType:"ok"
+  })
+},
+addProjects:async(req,res)=>{
+  await UserService.addProjects(req.body);
+  res.send({
+    ActionType:"ok"
+  })
+},
+updateProjects:async(req,res)=>{
+  await UserService.updateProjects(req.body);
+  res.send({
+    ActionType:"ok"
+  })
+},
+deleteProjects:async(req,res)=>{
+  await UserService.deleteProjects(req.body);
+  res.send({
+    ActionType:"ok"
+  })
 }
 }
 

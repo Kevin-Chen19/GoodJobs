@@ -74,6 +74,44 @@ await curriculumModel.updateOne(
   { $pull: { honorary: null } }
 );
 return await curriculumModel.findOne({ username });
+},
+addExperience:async({ username,experience })=>{
+  return curriculumModel.updateOne({username},{$push:{experience}})
+},
+updateExperience:async({username,index,experience})=>{
+  return curriculumModel.updateOne({username},{$set:{[`experience.${index}`]:experience}})
+},
+deleteExperience:async({username,index})=>{
+  // 第一步：将指定索引位置的元素设置为 null
+await curriculumModel.updateOne(
+  { username },
+  { $unset: { [`experience.${index}`]: 1 } }
+);
+// 第二步：移除数组中所有值为 null 的元素
+await curriculumModel.updateOne(
+  { username },
+  { $pull: { experience: null } }
+);
+return await curriculumModel.findOne({ username });
+},
+addProjects:async({ username,projects })=>{
+  return curriculumModel.updateOne({username},{$push:{projects}})
+},
+updateProjects:async({username,index,projects})=>{
+  return curriculumModel.updateOne({username},{$set:{[`projects.${index}`]:projects}})
+},
+deleteProjects:async({username,index})=>{
+  // 第一步：将指定索引位置的元素设置为 null
+await curriculumModel.updateOne(
+  { username },
+  { $unset: { [`projects.${index}`]: 1 } }
+);
+// 第二步：移除数组中所有值为 null 的元素
+await curriculumModel.updateOne(
+  { username },
+  { $pull: { projects: null } }
+);
+return await curriculumModel.findOne({ username });
 }
 }
 module.exports = UserService

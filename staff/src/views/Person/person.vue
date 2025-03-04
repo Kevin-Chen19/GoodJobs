@@ -104,7 +104,7 @@
           <div class="title">
             <img src="../../icons/工作经历.png" />工作/实习经历
           </div>
-          <div class="additems">+ 添加工作经验</div>
+          <div class="additems" @click="(selectSome=-1,selects(6))">+ 添加工作经验</div>
         </div>
         <div
           class="jobExperience"
@@ -113,19 +113,22 @@
           @mouseleave="outHover(0)"
         >
           <div class="company_time">
-            <p class="company">{{ item.company }}</p>
-            <p v-if="!hoverWitch[0]">{{ item.workTime }}</p>
-            <p v-if="hoverWitch[0]" class="edit">编辑</p>
+            <p class="company">{{ item.companyName }}</p>
+            <p v-if="!hoverWitch[0]">{{ item.times[0] }}--{{ item.times[1] }}</p>
+            <p v-if="hoverWitch[0]" class="edit" @click="(selectSome=index , selects(6))">编辑</p>
           </div>
           <div class="jobKind_salary">
             <p>{{ item.jobName }}</p>
             <p class="col">|</p>
             <p>{{ item.salary }}</p>
           </div>
-          <div class="jobKind">职位类别：{{ item.jobKind }}</div>
-          <div>拥有技能：{{ item.ablilty }}</div>
+          <div class="jobKind_salary">
+            <p>所属行业：{{ item.industry }}</p>
+            <p class="col">|</p>
+            <p>职位名称：{{ item.jobName }}</p>
+          </div>
           <p>工作内容：</p>
-          <div class="workRole">{{ item.workRole }}</div>
+          <div class="workRole">{{ item.introduction }}</div>
         </div>
       </div>
       <div class="MessageItem" id="part7">
@@ -133,7 +136,7 @@
           <div class="title">
             <img src="../../icons/项目经历.png" />项目经历
           </div>
-          <div class="additems">+ 添加项目经历</div>
+          <div class="additems" @click="(selectSome=-1, selects(7))">+ 添加项目经历</div>
         </div>
         <div
           class="jobExperience"
@@ -142,12 +145,12 @@
           @mouseleave="outHover(1)"
         >
           <div class="company_time">
-            <p class="company">{{ item.name }}</p>
-            <p v-if="!hoverWitch[1]">{{ item.time }}</p>
-            <p v-if="hoverWitch[1]" class="edit">编辑</p>
+            <p class="company">{{ item.projectsName }}</p>
+            <p v-if="!hoverWitch[1]">{{ item.times[0] }}--{{ item.times[1] }}</p>
+            <p v-if="hoverWitch[1]" class="edit" @click="(selectSome=index, selects(7))">编辑</p>
           </div>
           <p>项目描述：</p>
-          <div class="workRole">{{ item.workRole }}</div>
+          <div class="workRole">{{ item.introduction }}</div>
         </div>
       </div>
       <div class="MessageItem" id="part8">
@@ -191,29 +194,20 @@
   <el-dialog v-model="centerDialogVisible" width="850" align-center>
     <education v-if="selectWhich === 0" :personMessage="personMessage"
     :index=selectSome @sbmitForm="refreshMessage"></education>
-    <baseMess
-      v-if="selectWhich === 1"
-      :personMessage="personMessage"
-      @sbmitForm="refreshMessage"
-    ></baseMess>
-    <jobStatusMess
-      v-if="selectWhich === 2"
-      :personMessage="personMessage"
-      @pubJobStatusMess="pubJobStatusMess"
-    ></jobStatusMess>
-    <honorary
-    v-if="selectWhich === 3" 
-    @sbmitForm="refreshMessage"
-    ></honorary>
+    <baseMess v-if="selectWhich === 1"
+    :personMessage="personMessage"@sbmitForm="refreshMessage"></baseMess>
+    <jobStatusMess v-if="selectWhich === 2"
+      :personMessage="personMessage"@pubJobStatusMess="pubJobStatusMess"></jobStatusMess>
+    <honorary v-if="selectWhich === 3" 
+    @sbmitForm="refreshMessage"></honorary>
     <jobsWant v-if="selectWhich === 4"
-    :personMessage="personMessage"
-    @sbmitForm="refreshMessage"
-    ></jobsWant>
-    <introduction
-    v-if="selectWhich === 5"
-    :personMessage="personMessage"
-    @sbmitForm="refreshMessage"
-    ></introduction>
+    :personMessage="personMessage"@sbmitForm="refreshMessage"></jobsWant>
+    <introduction v-if="selectWhich === 5"
+    :personMessage="personMessage"@sbmitForm="refreshMessage"></introduction>
+    <experience v-if="selectWhich === 6" :personMessage="personMessage"
+    :index=selectSome @sbmitForm="refreshMessage"></experience>
+    <projects v-if="selectWhich === 7" :personMessage="personMessage"
+    :index=selectSome @sbmitForm="refreshMessage"></projects>
   </el-dialog>
   <backTop></backTop>
   <div style="height: 40px"></div>
@@ -229,6 +223,8 @@ import jobStatusMess from "@/components/personMessage/jobStatusMess.vue";
 import jobsWant from "@/components/personMessage/jobsWant.vue";
 import introduction from "@/components/personMessage/introduction.vue";
 import honorary from "@/components/personMessage/honorary.vue";
+import experience from "@/components/personMessage/experience.vue";
+import projects from "@/components/personMessage/projects.vue";
 import { ref, reactive, onMounted } from "vue";
 import axios from "axios";
 import store from "@/store";
