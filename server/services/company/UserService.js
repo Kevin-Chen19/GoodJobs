@@ -7,6 +7,10 @@ const UserService = {
       if (!user) {
         return { success: false,code:0};
       }
+      //判断是否为企业
+      if(user.role !== 1){
+        return { success: false,code:0};
+      }
       // 如果用户名存在，验证密码是否正确
       if (user.password === password) {
         // 密码正确，返回成功信息和用户数据或令牌

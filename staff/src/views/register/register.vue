@@ -106,7 +106,7 @@
   >
     <moreJobKinds v-if=" selectWhich === 0 "  @selectKinds="getKinds" @cancelKinds="cancel"></moreJobKinds>
     <moreAddress v-if=" selectWhich === 1 "  @selectAdd="getAddress" @cancelAdd="cancel"></moreAddress>
-    <education v-if=" selectWhich === 2 " @sbmitForm="getAducations"></education>
+    <education :ifRegister="true" v-if=" selectWhich === 2 " @register="getAducations"></education>
   </el-dialog>
 </template>
 <script setup>

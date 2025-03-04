@@ -69,11 +69,11 @@
   </div>
 </template>
 <script setup>
-import { ref, reactive, defineEmits, watch } from "vue";
+import { ref, reactive, defineEmits, watch ,defineProps} from "vue";
 import moment from "moment";
 import axios from "axios";
 import store from "@/store";
-const emit = defineEmits(["sbmitForm"]);
+const emit = defineEmits(["sbmitForm","register"]);
 const ruleFormRef = ref();
 const ifGet = ref(true);
 const ifEdit = ref(false);
@@ -111,6 +111,10 @@ const props = defineProps({
     required: true, 
     default:() => -1// 确保 index 是必传的
   },
+  ifRegister:{
+    type: Boolean,
+    default:() => false// 确保 index 是必传的
+  }
 });
 const rules = reactive({
   schoolName: [{ required: true, message: "请输入学校名称", trigger: "blur" }],
@@ -129,11 +133,16 @@ const submitForm = () => {
       console.log("submit!", ruleForm);
       let username = store.state.userInfo.username;
       let education = ruleForm;
-      axios.post("/staffapi/user/curriculum/addAducation", { username, education }).then((res) => {
-      if (res.data.ActionType === "ok") {
-        emit("sbmitForm", "ok");
+      if(props.ifRegister){
+        emit("register", education)
+      }else{
+        axios.post("/staffapi/user/curriculum/addAducation", { username, education }).then((res) => {
+          if (res.data.ActionType === "ok") {
+            emit("sbmitForm", "ok");
+          }
+        });
       }
-    });
+      
     } else {
       console.log("error submit!!");
       return false;

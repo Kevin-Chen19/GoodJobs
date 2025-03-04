@@ -1,6 +1,9 @@
 var express = require('express');
 const UserController = require('../../controllers/staff/UserController');
 var staffUserRouter = express.Router();
+//图片上传模块
+const multer = require('multer');
+const upload = multer({dest: 'public/avataruploads/'});
 
 staffUserRouter.post("/staffapi/user/login",UserController.login);
 staffUserRouter.post("/staffapi/user/register",UserController.register);
@@ -21,4 +24,5 @@ staffUserRouter.post("/staffapi/user/curriculum/deleteExperience",UserController
 staffUserRouter.post("/staffapi/user/curriculum/addProjects",UserController.addProjects);
 staffUserRouter.post("/staffapi/user/curriculum/updateProjects",UserController.updateProjects);
 staffUserRouter.post("/staffapi/user/curriculum/deleteProjects",UserController.deleteProjects);
+staffUserRouter.post("/staffapi/user/curriculum/updateAvator",upload.single('avatorFile'),UserController.updateAvator);
 module.exports = staffUserRouter;

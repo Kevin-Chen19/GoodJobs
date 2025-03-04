@@ -139,7 +139,17 @@ deleteProjects:async(req,res)=>{
   res.send({
     ActionType:"ok"
   })
-}
+},
+updateAvator:async(req,res)=>{
+  console.log("获取的数据：",req.file,req.body);
+    const {username} = req.body
+    let avator = req.file?`/avataruploads/${req.file.filename}`:""
+    console.log("头像地址：",avator);
+    await UserService.updateAvator({username,avator});
+    res.send({
+      ActionType:"ok"
+    })
+  }
 }
 
 module.exports = UserController;

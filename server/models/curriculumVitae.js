@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const curriculumType = {
   username:String,//用户名
+  avator:String,//证件照
   name:String,//真实姓名
   sex:String,//性别
   age:String,//年龄

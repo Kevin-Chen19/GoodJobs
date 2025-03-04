@@ -3,7 +3,18 @@
   <div class="mainBox">
     <div class="left" ref="containerRef">
       <div class="first" id="part1">
-        <div class="Avatar"><img src="../../assets/默认图像.png" alt="" /></div>
+        <el-upload
+          class="upload-demo"
+          action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15"
+          :show-file-list="false"
+          :on-change="handleChange"
+          :auto-upload="false"
+        >
+          <div class="Avatar">
+            <img v-if="!personMessage.avator" src= "../../assets/默认证件.png" alt="" />
+            <img v-if="personMessage.avator" :src= "uploadAvatar"  />
+          </div>
+        </el-upload>
         <div class="baseMess">
           <div class="name_Edit">
             <div class="name">{{ personMessage.name }}</div>
@@ -225,7 +236,8 @@ import introduction from "@/components/personMessage/introduction.vue";
 import honorary from "@/components/personMessage/honorary.vue";
 import experience from "@/components/personMessage/experience.vue";
 import projects from "@/components/personMessage/projects.vue";
-import { ref, reactive, onMounted } from "vue";
+import { ref, reactive, onMounted ,computed} from "vue";
+import upload from '@/util/upload'
 import axios from "axios";
 import store from "@/store";
 const hoverWitch = reactive([false, false, false]);
@@ -233,12 +245,33 @@ let personMessage = reactive({});
 const selectWhich = ref(1);
 const selectSome = ref(-1);
 const centerDialogVisible = ref(false);
+const avator = ref("");
+const avatorFile = ref(null);
 const arrayString = (array) => {
   return array.join("、");
 };
-
-const containerRef = (ref < HTMLElement) | (null > null);
-
+const uploadAvatar = computed(()=>{
+  if(personMessage.avator){
+    return personMessage.avator.includes("blob")?personMessage.avator:"http://localhost:3000"+personMessage.avator
+  }else{
+    return "../../icons/头像.png"
+  }
+  
+})
+const handleChange = async (file) => {
+  avator.value = URL.createObjectURL(file.raw)
+  avatorFile.value = file.raw
+  console.log(avatorFile.value , avator.value )
+  const res = await upload("/staffapi/user/curriculum/updateAvator",{
+    username:store.state.userInfo.username,
+    avator:avator.value,
+    avatorFile:avatorFile.value
+  })
+  if (res.ActionType === "ok") {
+    getPersonMessage();
+  }
+  console.log(res)
+}
 const handleClick = (e) => {
   e.preventDefault();
 };
@@ -257,10 +290,10 @@ const getPersonMessage = () => {
     .get("/staffapi/user/getCurriculum/" + store.state.userInfo.username)
     .then((res) => {
       console.log(res);
-      if (res.data.ActionType === "ok") {
+      if (res.data.data.length !== 0) {
         /*reactive 的使用:
-    reactive 创建的响应式对象不能直接重新赋值，否则会失去响应性。
-    通过 Object.assign 或手动赋值的方式更新对象的属性。*/
+        reactive 创建的响应式对象不能直接重新赋值，否则会失去响应性。
+        通过 Object.assign 或手动赋值的方式更新对象的属性。*/
         // 将返回的数据合并到 personMessage 中
         Object.assign(personMessage, res.data.data[0]);
         console.log(personMessage);
@@ -330,15 +363,6 @@ onMounted(() => {
   width: 100%;
   padding: 20px;
   margin-top: 20px;
-  .Avatar {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    overflow: hidden;
-    img {
-      width: 100%;
-    }
-  }
   .baseMess {
     width: 80%;
     margin-left: 20px;
@@ -370,6 +394,14 @@ onMounted(() => {
     }
   }
 }
+.Avatar {
+  margin-top: -20px;
+    width: 120px;
+    overflow: hidden;
+    img {
+      width: 100%;
+    }
+  }
 .col {
   font-size: small;
   color: rgba(128, 128, 128, 0.685);

@@ -29,7 +29,6 @@ import axios from "axios";
 const router = useRouter();
 const store = useStore();
 const emits = defineEmits(["ifRegister"]);
-const activeName = ref("first");
 const ifRegister = ref(false);
 const props = defineProps({
   trueRegister: {
@@ -67,7 +66,13 @@ const submitFirmForm = (formRef) => {
           store.commit("changeUserInfo", res.data.data);
           localStorage.setItem("token", res.data.token);
           store.commit("changeGetterRouter", false);
-          router.push("/home");
+          axios.get("/staffapi/user/getCurriculum/"+ store.state.userInfo.username).then((res)=>{
+            if (res.data.data.length !== 0) {
+              router.push("/home");
+            }else{
+              router.push("/register");
+            }
+          })
         } else if (res.data.code === 0) {
           emits("ifRegister", true);
         } else {

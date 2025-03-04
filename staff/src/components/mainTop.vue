@@ -28,9 +28,9 @@
         </el-col>
         <el-col :span="4" class="avater_name">
           <div class="block">
-            <el-avatar :size="50" :src="circleUrl" />
+            <img class="touPic" src="../assets/默认图像.png" />
           </div>
-          <p style="margin-left: 10px">姓名</p>
+          <p style="margin-left: 10px">{{ store.state.userInfo.username }}</p>
           <div class="lin">|</div>
           <div class="out" @click="outLogin()">退出登录</div>
         </el-col>
@@ -134,5 +134,10 @@ const outLogin = () => {
   cursor: pointer;
   font-size: 15px;
   color: rgb(36, 86, 236);
+}
+.touPic{
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
 }
 </style>
