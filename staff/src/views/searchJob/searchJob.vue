@@ -502,11 +502,16 @@ watch([subject, address1, kinds, jobtype,select1,select2,select3], () => {
     .companyLogo{
       width: 35px;
       height: 35px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       border-radius: 10px;
-      border: 2px solid black;
+      border: 1.5px solid black;
       overflow: hidden;
       img{
         width: 100%;
+        height: 100%;
+        object-fit: cover;
       }
     }
     .companyOthers{

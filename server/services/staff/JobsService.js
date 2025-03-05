@@ -7,7 +7,7 @@ const JobsService = {
     const query = {};
     if (subject !== "不限") query.subject = { $in:[subject]};
     if(kinds[0] !== "不限") query.jobKinds = { $elemMatch:{2:{ $in:kinds}} };
-    if (address1[0] !== "全国" && address1.length > 0) {
+    if (address1[0] !== "全国" ) {
       // 创建一个正则表达式，匹配数组中的任何一个城市名称
       const citiesRegex = new RegExp(address1.join('|')); // 'i' 表示不区分大小写
       query.address = { $regex: citiesRegex };
@@ -19,9 +19,9 @@ const JobsService = {
         query.type = type;
       }
     }
-    if (select1 !== "学历" && select1 !== "不限" && select1 !== "") query.tags = { $in:[select1]};
-    if (select2 !== "公司行业" && select2 !== "不限" && select2 !== "") query["companyMessage.companyIndustry"] = select2;
-    if (select3 !== "公司规模" && select3 !== "不限" && select3 !== "") query["companyMessage.staffNumber"] = select3;
+    if (select1 !== "学历" && select1 !== "不限" ) query.tags = { $in:[select1]};
+    if (select2 !== "公司行业" && select2 !== "不限" ) query["companyMessage.companyIndustry"] = select2;
+    if (select3 !== "公司规模" && select3 !== "不限" ) query["companyMessage.staffNumber"] = select3;
     // 分页处理
     console.log(query);
      const limit = 5; // 每页显示的记录数
