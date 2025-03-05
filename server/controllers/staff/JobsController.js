@@ -14,6 +14,15 @@ const JobsController = {
       ActionType:"ok",
       jobsKindList
     })
+  },
+  searchList:async(req,res)=>{
+    const keyword = req.query.keyword
+    const pageNum = req.query.pageNum
+    const jobsKindList = await JobsService.searchList(pageNum, keyword)
+    res.send({
+      ActionType:"ok",
+      jobsKindList
+    })
   }
 }
 module.exports = JobsController

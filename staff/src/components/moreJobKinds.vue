@@ -111,6 +111,9 @@ const cancel = () =>{
 }
 const confirm = () =>{
   //将Select中的数据赋值给hadSelect，让hadSelect中的数据与Select中的数据保持一致
+  if(Select.length === 0) {
+    Select.push("不限")
+  }
   hadSelect.splice(0, hadSelect.length, ...Select);
   emit('selectKinds',hadSelect)
 }

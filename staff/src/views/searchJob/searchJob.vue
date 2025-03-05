@@ -1,5 +1,5 @@
 <template>
-  <search></search>
+  <search @search="toSearch"></search>
   <div class="kindBox">
     <div class="selectTab">
       <div class="selectItem"
@@ -114,7 +114,7 @@
       <el-card class="leftBox" shadow="hover">广告区</el-card>
     </div>
   </div>
-  <div class="getMoreBtn" @click="getJobs" v-if="!ifNoMore">更多职位</div>
+  <div class="getMoreBtn" @click="getMore()" v-if="!ifNoMore">更多职位</div>
   <backTop></backTop>
   <el-dialog
     v-model="centerDialogVisible"
@@ -125,12 +125,6 @@
       <div class="my-header">
         <div class="top">
           <p>请选择{{ selectitems[selectWhich] }}</p>
-          <el-input
-            v-model="input2"
-            style="width: 240px"
-            :placeholder="selectItems[selectWhich]"
-            :prefix-icon="Search"
-          />
         </div>
       </div>
     </template>
@@ -172,7 +166,6 @@ const options = [
   { label: '按专业筛选' },
   { label: '按职类筛选' }
 ];
-const selectItems = ["搜索专业","搜索职位类别","搜索城市"]
 const selectitems = ["专业","职位","城市"]
 const select1 = ref("学历")
 const select2 = ref("公司行业")
@@ -186,6 +179,20 @@ const address = ["全国","北京","上海","广州","深圳","武汉","南京",
 const jobType = ["不限","全职","兼职/临时","实习"]
 // 定义一个响应式数据属性来跟踪选中的索引，默认为0（第一个选项）
 const selectedIndex = ref(0);
+const toSearch = (value) => {
+  input2.value = value
+  pageNum.value = 1
+  getMore()
+}
+const getSearchJobs = (num)=>{
+  axios.get("/staffapi/jobs/searchList",{params:{pageNum:num,keyword:input2.value}}).then((res)=>{
+    console.log(res.data.jobsKindList)
+    showJobs.splice(0,showJobs.length,...res.data.jobsKindList)
+    if(res.data.jobsKindList.length < 5){
+      ifNoMore.value = true
+    }
+  })
+}
 // 定义一个方法来处理选项的点击事件
 function selectOption(index) {
   selectedIndex.value = index;
@@ -289,6 +296,15 @@ const ifSelectKinds = (value) =>{
     return false
   }
 }
+//获取更多
+const getMore = () => {
+  if(input2.value === ""){
+    getJobs()
+  }else{
+    getSearchJobs(pageNum.value)
+    pageNum.value ++
+  }
+}
 //获取职位
 const getJobs = ()=> {
    axios.get('/staffapi/jobs/KindList', {
@@ -320,11 +336,24 @@ const photo = (url) => {
     : "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png";
 };
 onMounted(() => {
-  getJobs()
+  console.log(history.state.jobKind)
+  if(history.state.jobKind === undefined){
+    getJobs()
+  }else{
+  if(history.state.witch === true){
+      selectedIndex.value = 0;
+      subject.value = history.state.jobKind
+    }else if(history.state.witch === false){
+      selectedIndex.value = 1;
+      kinds.splice(0,kinds.length,history.state.jobKind)
+    }
+  }
+ 
 })
 watch([subject, address1, kinds, jobtype,select1,select2,select3], () => {
   pageNum.value = 1
   showJobs.splice(0,showJobs.length)
+  console.log("watch调用一次")
   getJobs()
 }, { deep: true });
 </script>

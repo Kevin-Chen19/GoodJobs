@@ -107,11 +107,15 @@ const cancel = () =>{
 }
 const confirm = () =>{
   //将Select中的数据赋值给hadSelect，让hadSelect中的数据与Select中的数据保持一致
-  hadSelect.value = [...Select.value];
   let selectAddress = []
-  Select.value.forEach(item => {
-      selectAddress.push(item)
-    })
+  if(Select.value.length === 0) {
+    selectAddress.push("全国")
+  }else{
+    hadSelect.value = [...Select.value];
+    Select.value.forEach(item => {
+        selectAddress.push(item)
+      })
+  }
   emit('selectAdd',selectAddress)
 }
 

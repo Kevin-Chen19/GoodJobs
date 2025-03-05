@@ -7,13 +7,17 @@
             :prefix-icon="Search"
             clearable="true"
           />
-      <el-button type="primary" round class="but">搜索</el-button>
+      <el-button type="primary" round class="but" @click="toSearch">搜索</el-button>
     </div>
 </template>
 <script setup>
-import { ref } from 'vue'
+import { ref ,defineEmits} from 'vue'
 import { Search } from '@element-plus/icons-vue'
+const emits = defineEmits(['search'])
 const input2 = ref('')
+const toSearch = () => {
+  emits('search',input2.value)
+}
 </script>
 <style lang="scss" scoped>
 .searchBox{

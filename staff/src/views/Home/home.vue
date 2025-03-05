@@ -1,6 +1,6 @@
 <template>
   <div class="temStyle">
-    <search></search>
+    <search @click="toSearchPage"></search>
     <div class="categoryBox">
       <div style="display: flex" @mouseleave="handleMouseLeave">
         <el-card style="border-radius: 15px">
@@ -451,7 +451,13 @@ const handleMouseLeave = () => {
   ifSelect.value = false;
 };
 const toJob = (job) => {
-  console.log(job);
+  router.push({
+    path:"/searchJob",
+    state:{
+      witch:ifByProfession.value,
+      jobKind:job
+    }
+  })
 };
 onMounted(async () => {
   const result = await axios.get("/staffapi/jobs/list");
@@ -466,6 +472,9 @@ const lookMore = () => {
   router.push("/recommend");
 };
 const allKinds = () =>{
+  router.push("/searchJob")
+}
+const toSearchPage = ()=>{
   router.push("/searchJob")
 }
 </script>

@@ -79,7 +79,6 @@ const handleSelect = (keyPath) => {
 const outLogin = () => {
   localStorage.removeItem("token");
   store.commit("clearUserInfo"); //清空用户信息
-  store.commit("clearAvatarUrl");
   router.push("/login");
 };
 </script>

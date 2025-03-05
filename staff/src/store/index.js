@@ -3,8 +3,7 @@ import createPersistedState from 'vuex-persistedstate'
 export default createStore({
   state: {
     isGetterRouter:false,
-    userInfo:{},
-    avatarUrl:""
+    userInfo:{}
   },
   getters: {
   },
@@ -18,21 +17,15 @@ export default createStore({
         ...value
       }
     },
-    changeAvatarUrl(state,value){
-      state.avatarUrl = value
+      clearUserInfo(state){
+        state.userInfo = {}
+      }
     },
-    clearUserInfo(state){
-      state.userInfo = {}
-    },
-    clearAvatarUrl(state){
-      state.avatarUrl = ""
-    }
-  },
   actions: {
   },
   modules: {
   },
   plugins:[createPersistedState({
-    paths:["userInfo","avatarUrl"]//指定需要持久化的状态
+    paths:["userInfo"]//指定需要持久化的状态
   })]
 })

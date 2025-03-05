@@ -60,9 +60,10 @@
 <script setup>
 import backTop from "@/components/backTop.vue";
 import { ArrowDown } from '@element-plus/icons-vue'
-import { ref, reactive ,watch} from "vue";
+import { ref, reactive ,watch, onMounted} from "vue";
 import axios from "axios";
-const menu = ref(["最新推荐","专业对口","前端开发","web前端"])
+import store from "@/store";
+const menu = ref(["最新推荐"])
 const education = ["不限","高中","中专/中技","大专","本科","硕士"]
 const character = ["不限","全职","兼职/临时","实习"]
 const select1 = ref("学历")
@@ -117,6 +118,13 @@ const photo = (url) => {
     ? "http://localhost:3000" + url
     : "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png";
 };
+onMounted(() => {
+  axios.get("/staffapi/user/getCurriculum/"+ store.state.userInfo.username).then((res) => {
+    console.log(res.data.data[0].jobKinds)
+    menu.value.push(...res.data.data[0].jobKinds)
+  })
+  getJobs()
+})
 </script>
 
 <style lang="scss" scoped>
