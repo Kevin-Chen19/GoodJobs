@@ -13,15 +13,37 @@
       <div class="btn">立即投递</div>
     </div>
   </div>
-  <div class="otherMess">
-    <div>职位描述：</div>
-    <p v-html="formattedResponsibility"></p>
+  <div class="mainBox">
+    <el-card class="otherMess">
+        <div class="ofOne">
+          <div class="otherTitle">职位描述：</div>
+          <div class="messages" v-html="formattedResponsibility"></div>
+        </div>
+        <div class="ofOne">
+          <div class="otherTitle">岗位要求：</div>
+          <div class="messages" v-html="formattedRequirements"></div>
+        </div>
+    </el-card>
+    <el-card class="boxRight">
+      <div class="companyLogo"><img :src="companyLogo" alt=""></div>
+      <h3>{{ job.companyMessage.companyName }}</h3>
+      <p>所属行业：{{ job.companyMessage.companyIndustry }}</p>
+      <p>企业规模：{{ job.companyMessage.staffNumber }}</p>
+      <div class="btns">查看企业详情</div>
+    </el-card>
   </div>
+  <backTop/>
+  <bottom></bottom>
 </template>
 <script setup>
-import { computed } from 'vue';
+import backTop from '@/components/backTop.vue';
+import bottom from '@/components/bottom.vue';
+import { computed ,onMounted} from 'vue';
+import { useRoute } from 'vue-router';
+const route = useRoute();
 import moment from 'moment';
-const job = {
+import { reactive } from 'vue';
+const job = reactive({
   _id: "67baabd935de20723d118221",
   pubUser: "湘潭凝智",
   jobName: "前端开发工程师-25春招",
@@ -63,13 +85,24 @@ const job = {
     introduction: "很好"
   },
   editTime:  "2025-02-23T05:02:17.904Z"
-}
+})
 const formattedResponsibility =computed(()=>{
    // 将换行符替换为 <br>，并为 <br> 添加自定义 class
-  return job.responsibility.replace(/\n/g, '<br class="line-break">');
+  return job.responsibility.replace(/\n/g, '<p style="margin-top : 10px"></p>');
 }) 
+const formattedRequirements =computed(()=>{
+   // 将换行符替换为 <br>，并为 <br> 添加自定义 class
+  return job.requirements.replace(/\n/g, '<p style="margin-top : 10px"></p>');
+})
 const jobTime = computed(() => {
   return moment(job.editTime).format('YYYY-MM-DD')
+})
+const companyLogo = computed(()=>{
+  return job.companyMessage.companyLogo.includes("blob")?job.companyMessage.companyLogo:"http://localhost:3000"+job.companyMessage.companyLogo
+})
+onMounted(()=>{
+  let getJob = JSON.parse(route.query.job)
+  Object.assign(job, getJob); // 将 getJob 的属性合并到 job 中
 })
 </script>
 <style lang="scss" scoped>
@@ -134,17 +167,61 @@ const jobTime = computed(() => {
 .btn:hover{
   background-color: #3682ce;
 }
+.mainBox{
+  width: 100%;
+  display: flex;
+  margin-top: 20px;
+  margin-bottom: 30px;
+}
 .otherMess{
   width: 65%;
-  margin-top: 20px;
-  height: 500px;
   margin-left: 3%;
   background-color: #fff;
   border-radius: 25px;
   padding: 25px;
 
 }
-.line-break {
-  margin-top: 10px; /* 设置间距 */
+.ofOne{
+  margin-bottom: 20px;
+}
+.otherTitle{
+  margin-bottom: 20px;
+  font-size: 20px;
+}
+.messages{
+  width: 100%;
+}
+.boxRight{
+  width: 25%;
+  margin-left: 2%;
+  height: fit-content;
+  border-radius: 25px;
+  background-color: #fff;
+  padding: 20px;
+  .companyLogo{
+    width: 100px;
+    height: 100px;
+    border-radius: 15px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    img{
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+  p{
+    margin-top: 10px;
+  }
+  .btns{
+    width: 100px;
+    color: #007fff;
+    border: #007fff 1px solid;
+    padding: 8px 50px;
+    border-radius: 35px;
+    margin-top: 20px;
+    margin-left: 50px;
+    cursor: pointer;
+  }
 }
 </style>

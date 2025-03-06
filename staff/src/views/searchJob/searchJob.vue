@@ -81,7 +81,7 @@
   </div>
   <div class="mainBox">
     <div class="mainLeft">
-      <div class="jobItem"v-for="item in showJobs">
+      <div class="jobItem"v-for="item in showJobs" @click="goToJobDetail(item)">
         <div class="jobTop">
           <h4>{{ item.jobName }}</h4>
           <p>{{ item.salary }}</p>
@@ -149,7 +149,9 @@ import { ArrowDown,Search } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus';
 import search from '@/components/search.vue';
 import { ref ,reactive ,onMounted ,watch} from 'vue';
+import { useRouter } from 'vue-router';
 import axios from 'axios';
+const router = useRouter()
 const input2 = ref('')
 const centerDialogVisible = ref(false)
 const selectWhich = ref(0)
@@ -356,6 +358,14 @@ watch([subject, address1, kinds, jobtype,select1,select2,select3], () => {
   console.log("watch调用一次")
   getJobs()
 }, { deep: true });
+const goToJobDetail = (value)=>{
+  router.push({
+    path: "/detail",
+    query: {
+      job: JSON.stringify(value)
+    }
+  })
+}
 </script>
 <style lang="scss" scoped>
 .kindBox{

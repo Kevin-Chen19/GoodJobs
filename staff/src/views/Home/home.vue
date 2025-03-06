@@ -126,7 +126,7 @@
         <p>平台最新职位上新</p>
       </div>
       <el-row :gutter="20" class="jobAddress">
-        <el-col :span="8" v-for="(item, index) in jobs">
+        <el-col :span="8" v-for="(item, index) in jobs" @click="goToJobDetail(item)">
           <div class="smallBox">
             <div class="jobNameLine">
               <p>{{ item.jobName }}</p>
@@ -476,6 +476,14 @@ const allKinds = () =>{
 }
 const toSearchPage = ()=>{
   router.push("/searchJob")
+}
+const goToJobDetail = (value)=>{
+  router.push({
+    path: "/detail",
+    query: {
+      job: JSON.stringify(value)
+    }
+  })
 }
 </script>
 <style lang="scss" scoped>

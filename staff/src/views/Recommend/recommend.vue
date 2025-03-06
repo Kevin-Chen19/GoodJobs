@@ -29,7 +29,7 @@
           </el-dropdown>
         </div>
       </div>
-      <div class="jobItem" v-for="item in showJobs">
+      <div class="jobItem" v-for="item in showJobs" @click="goToJobDetail(item)">
         <div class="jobTop">
           <h4>{{ item.jobName }}</h4>
           <p>{{ item.salary }}</p>
@@ -52,6 +52,10 @@
           </div>
         </div>
       </div>
+      <div class="noMore" v-if="ifNoMore">
+          暂无更多。。。
+      </div>
+      <div class="getMoreBtn" @click="getJobs()" v-if="!ifNoMore">更多职位</div>
     </div>
   </div>
   <backTop></backTop>
@@ -63,6 +67,7 @@ import { ArrowDown } from '@element-plus/icons-vue'
 import { ref, reactive ,watch, onMounted} from "vue";
 import axios from "axios";
 import store from "@/store";
+import router from "@/router";
 const menu = ref(["最新推荐"])
 const education = ["不限","高中","中专/中技","大专","本科","硕士"]
 const character = ["不限","全职","兼职/临时","实习"]
@@ -125,6 +130,14 @@ onMounted(() => {
   })
   getJobs()
 })
+const goToJobDetail = (value)=>{
+  router.push({
+    path: "/detail",
+    query: {
+      job: JSON.stringify(value)
+    }
+  })
+}
 </script>
 
 <style lang="scss" scoped>
@@ -265,5 +278,32 @@ onMounted(() => {
   cursor: pointer;
   background-color: #cfd8e5ac;
   color: black;
+}
+.noMore{
+  width: 100%;
+  height: 50px;
+  line-height: 50px;
+  text-align: center;
+  color: gray;
+  font-size: 18px;
+}
+.getMoreBtn{
+  display: flex;
+  margin-left: 40%;
+  justify-content: center;
+  padding: 10px 0;
+  width: 150px;
+  align-items: center;
+  background-color: #099bef5a;
+  border-radius: 25px;
+  color: rgba(0, 72, 255, 0.693);
+  margin-top: 20px;
+  font-size: 18px;
+  font-weight: 600;
+}
+.getMoreBtn:hover{
+  cursor: pointer;
+  background-color: #42adeb5a;
+  color: rgba(17, 0, 255, 0.693);
 }
 </style>
