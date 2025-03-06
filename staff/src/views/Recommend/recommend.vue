@@ -68,6 +68,8 @@ import { ref, reactive ,watch, onMounted} from "vue";
 import axios from "axios";
 import store from "@/store";
 import router from "@/router";
+import { useJobStore } from "../../store/pinia_Job";
+const jobStore = useJobStore()
 const menu = ref(["最新推荐"])
 const education = ["不限","高中","中专/中技","大专","本科","硕士"]
 const character = ["不限","全职","兼职/临时","实习"]
@@ -79,20 +81,26 @@ const showJobs = reactive([])
 const ifNoMore = ref(false)
 watch([select1,select2,selectMenu], () => {
   console.log("变化了",select1.value,select2.value,selectMenu.value)
-  pageNum.value = 1
-  showJobs.splice(0,showJobs.length)
-  getJobs()
-  console.log(showJobs);
+  //判断是否是从其他界面回到本界面
+  if(!jobStore.ifToOtherPage){
+    pageNum.value = 1
+    showJobs.splice(0,showJobs.length)
+    getJobs()
+  }
+  //当在当前界面点击不同分类后再允许下次获取新数据（滞后性是因为当其他界面回到本界面时watch会先于getJobs执行)
+  jobStore.ifToOtherPage = false
 }, { deep: true });
 const handleCommandOne = (command) => {
   select1.value = command
+  jobStore.select1 = command
 }
 const chooseMenu = (command) => {
   selectMenu.value = command
-  console.log(selectMenu.value)
+  jobStore.selectMenu = command
 }
 const handleCommand2 = (command) => {
   select2.value = command
+  jobStore.select2 = command
 }
 const getJobs = ()=> {
    axios.get('/staffapi/jobs/KindList', {
@@ -112,9 +120,20 @@ const getJobs = ()=> {
     pageNum.value ++ 
     if(res.data.jobsKindList.length < 5){
       ifNoMore.value = true
+      jobStore.ifNoMore = true
     }else{
       ifNoMore.value = false
+      jobStore.ifNoMore = false
     }
+    //更新pinia
+    jobStore.reset()//重置
+    jobStore.jobList.push(...showJobs)
+    jobStore.pageNum = pageNum.value
+    jobStore.ifToOtherPage = false
+    jobStore.ifNoMore = ifNoMore.value
+    jobStore.select1 = select1.value
+    jobStore.select2 = select2.value
+    jobStore.selectMenu = selectMenu.value
   })
 }
 //匹配公司标志
@@ -128,7 +147,17 @@ onMounted(() => {
     console.log(res.data.data[0].jobKinds)
     menu.value.push(...res.data.data[0].jobKinds)
   })
-  getJobs()
+  console.log("jobList",jobStore.jobList);
+  if(jobStore.jobList.length === 0){
+    getJobs()
+  }else{
+    Object.assign(showJobs,jobStore.jobList)
+    pageNum.value = jobStore.pageNum
+    select1.value = jobStore.select1
+    select2.value = jobStore.select2
+    selectMenu.value = jobStore.selectMenu
+    ifNoMore.value = jobStore.ifNoMore
+  }
 })
 const goToJobDetail = (value)=>{
   router.push({

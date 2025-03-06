@@ -150,6 +150,8 @@ import { ElMessage } from 'element-plus';
 import search from '@/components/search.vue';
 import { ref ,reactive ,onMounted ,watch} from 'vue';
 import { useRouter } from 'vue-router';
+import {useSearchStore} from '@/store/searchPinia'
+const searchStore = useSearchStore()
 import axios from 'axios';
 const router = useRouter()
 const input2 = ref('')
@@ -329,6 +331,21 @@ const getJobs = ()=> {
     }else{
       ifNoMore.value = false
     }
+    //更新pinia
+    searchStore.reset()//重置
+    searchStore.jobList.push(...showJobs)
+    searchStore.pageNum = pageNum.value
+    searchStore.ifNoMore = ifNoMore.value
+    Object.assign(searchStore.address1,address1)
+    Object.assign(searchStore.kinds,kinds)
+    searchStore.subject = subject.value
+    searchStore.jobtype = jobtype.value
+    searchStore.type = type.value
+    searchStore.select1 = select1.value
+    searchStore.select2 = select2.value
+    searchStore.select3 = select3.value
+    searchStore.selectWhich = selectWhich.value
+    searchStore.input2 = input2.value
   })
 }
 //匹配公司标志
@@ -340,7 +357,23 @@ const photo = (url) => {
 onMounted(() => {
   console.log(history.state.jobKind)
   if(history.state.jobKind === undefined){
-    getJobs()
+    if(searchStore.jobList.length === 0 ){
+      getJobs()
+    }else{
+      Object.assign(showJobs,searchStore.jobList)
+      pageNum.value = searchStore.pageNum
+      ifNoMore.value = searchStore.ifNoMore
+      subject.value = searchStore.subject
+      Object.assign(address1,searchStore.address1)
+      Object.assign(kinds,searchStore.kinds)
+      jobtype.value = searchStore.jobtype
+      type.value = searchStore.type
+      select1.value = searchStore.select1
+      select2.value = searchStore.select2
+      select3.value = searchStore.select3
+      selectWhich.value = searchStore.selectWhich
+      input2.value = searchStore.input2
+    }
   }else{
   if(history.state.witch === true){
       selectedIndex.value = 0;
@@ -353,11 +386,23 @@ onMounted(() => {
  
 })
 watch([subject, address1, kinds, jobtype,select1,select2,select3], () => {
-  pageNum.value = 1
-  showJobs.splice(0,showJobs.length)
+  if(!searchStore.ifToOtherPage){
+    pageNum.value = 1
+    showJobs.splice(0,showJobs.length)
+    getJobs()
+  }
+  searchStore.ifToOtherPage = false
   console.log("watch调用一次")
-  getJobs()
-}, { deep: true });
+// 将 history.state.jobKind 设置为 undefined
+  const currentState = history.state;
+  const newState = {
+    ...currentState, // 保留其他状态
+    jobKind: undefined, // 设置 jobKind 为 undefined
+  };
+  // 使用 history.replaceState 更新 state
+  history.replaceState(newState, '');
+
+  }, { deep: true });
 const goToJobDetail = (value)=>{
   router.push({
     path: "/detail",
