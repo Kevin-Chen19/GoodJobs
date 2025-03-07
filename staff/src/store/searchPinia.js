@@ -13,10 +13,10 @@ export const useSearchStore = defineStore('jobs', ()=>{
   const select2 = ref("公司行业")
   const select3 = ref("公司规模")
   const input2 = ref('')
-  const selectWhich = ref(0)
   const jobList = reactive([])//展示的职位数组
   const ifNoMore = ref(false)//是否还有更多
   const ifToOtherPage = ref(false)//是否跳转到其他页面
+  const selectedIndex = ref(0);
   const reset = () => {
     pageNum.value = 1
     subject.value = "不限"
@@ -28,10 +28,10 @@ export const useSearchStore = defineStore('jobs', ()=>{
     select2.value = "公司行业"
     select3.value = "公司规模"
     input2.value = ''
-    selectWhich.value = 0
     jobList.splice(0,jobList.length)
     ifNoMore.value = false//是否还有更多
     ifToOtherPage.value = false//是否跳转到其他页面
+    selectedIndex.value = 0
   }
   return {
     pageNum,
@@ -44,10 +44,10 @@ export const useSearchStore = defineStore('jobs', ()=>{
     select2,
     select3,
     input2,
-    selectWhich,
     jobList,
     ifNoMore,
     ifToOtherPage,
+    selectedIndex,
     reset
   }
 })

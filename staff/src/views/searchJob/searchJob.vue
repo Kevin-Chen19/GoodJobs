@@ -344,7 +344,7 @@ const getJobs = ()=> {
     searchStore.select1 = select1.value
     searchStore.select2 = select2.value
     searchStore.select3 = select3.value
-    searchStore.selectWhich = selectWhich.value
+    searchStore.selectedIndex = selectedIndex.value
     searchStore.input2 = input2.value
   })
 }
@@ -371,9 +371,10 @@ onMounted(() => {
       select1.value = searchStore.select1
       select2.value = searchStore.select2
       select3.value = searchStore.select3
-      selectWhich.value = searchStore.selectWhich
+      selectedIndex.value = searchStore.selectedIndex
       input2.value = searchStore.input2
     }
+    ifChange()
   }else{
   if(history.state.witch === true){
       selectedIndex.value = 0;
@@ -383,7 +384,6 @@ onMounted(() => {
       kinds.splice(0,kinds.length,history.state.jobKind)
     }
   }
- 
 })
 watch([subject, address1, kinds, jobtype,select1,select2,select3], () => {
   if(!searchStore.ifToOtherPage){
@@ -410,6 +410,16 @@ const goToJobDetail = (value)=>{
       job: JSON.stringify(value)
     }
   })
+}
+//判断当离开本界面时分类信息是否变化
+const ifChange = () =>{
+  let ifChange = true
+  if(subject.value === "不限" && address1[0] === "全国" && kinds[0] === "不限" && jobtype.value === "不限" && select1.value === "学历" && select2.value === "公司行业" && select3.value === "公司规模" && selectWhich.value === 0 && input2.value === ''){
+    ifChange = false
+  }
+  if(!ifChange){
+    searchStore.ifToOtherPage = false
+  }
 }
 </script>
 <style lang="scss" scoped>

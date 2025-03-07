@@ -81,6 +81,7 @@ const showJobs = reactive([])
 const ifNoMore = ref(false)
 watch([select1,select2,selectMenu], () => {
   console.log("变化了",select1.value,select2.value,selectMenu.value)
+  console.log("ifToOtherPage",jobStore.ifToOtherPage)
   //判断是否是从其他界面回到本界面
   if(!jobStore.ifToOtherPage){
     pageNum.value = 1
@@ -129,7 +130,6 @@ const getJobs = ()=> {
     jobStore.reset()//重置
     jobStore.jobList.push(...showJobs)
     jobStore.pageNum = pageNum.value
-    jobStore.ifToOtherPage = false
     jobStore.ifNoMore = ifNoMore.value
     jobStore.select1 = select1.value
     jobStore.select2 = select2.value
@@ -158,6 +158,7 @@ onMounted(() => {
     selectMenu.value = jobStore.selectMenu
     ifNoMore.value = jobStore.ifNoMore
   }
+  ifChange()
 })
 const goToJobDetail = (value)=>{
   router.push({
@@ -166,6 +167,15 @@ const goToJobDetail = (value)=>{
       job: JSON.stringify(value)
     }
   })
+}
+const ifChange = ()=>{
+  let change = true
+  if(select1.value === "学历" && select2.value === "工作性质" && selectMenu.value === "最新推荐"){
+    change = false
+  }
+  if(!change){
+    jobStore.ifToOtherPage = false
+  }
 }
 </script>
 
