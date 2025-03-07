@@ -149,6 +149,12 @@ updateAvator:async(req,res)=>{
     res.send({
       ActionType:"ok"
     })
+  },
+  updateLastLook:async(req,res)=>{
+    await UserService.updateLastLook(req.body);
+    res.send({
+      ActionType:"ok"
+    })
   }
 }
 

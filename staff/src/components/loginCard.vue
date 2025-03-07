@@ -68,6 +68,8 @@ const submitFirmForm = (formRef) => {
           store.commit("changeGetterRouter", false);
           axios.get("/staffapi/user/getCurriculum/"+ store.state.userInfo.username).then((res)=>{
             if (res.data.data.length !== 0) {
+              console.log(res.data.data[0].lastLook)
+              store.state.lastLook.splice(0,store.state.lastLook.length,...res.data.data[0].lastLook)
               router.push("/home");
             }else{
               router.push("/register");

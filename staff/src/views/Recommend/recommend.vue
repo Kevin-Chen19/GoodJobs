@@ -177,6 +177,7 @@ const ifChange = ()=>{
     jobStore.ifToOtherPage = false
   }
 }
+
 </script>
 
 <style lang="scss" scoped>
@@ -295,10 +296,12 @@ const ifChange = ()=>{
       width: 35px;
       height: 35px;
       border-radius: 10px;
-      border: 2px solid black;
+      border: 1.5px solid black;
       overflow: hidden;
       img{
         width: 100%;
+        height: 100%;
+        object-fit: cover;
       }
     }
     .companyOthers{

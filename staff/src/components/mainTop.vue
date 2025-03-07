@@ -43,9 +43,12 @@
 import { ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import store from "@/store/index.js";
+import {useJobStore} from "@/store/pinia_Job.js"
+import {useSearchStore} from "@/store/searchPinia.js"
 const route = useRoute();
 const router = useRouter();
 const activeIndex = ref("1");
+import axios from "axios";
 const handleSelect = (keyPath) => {
   console.log(keyPath);
   //获取当前路由
@@ -77,8 +80,19 @@ const handleSelect = (keyPath) => {
   }
 };
 const outLogin = () => {
+  const piniaJob = useJobStore();
+  const searchPinia = useSearchStore();
+  axios.post("/staffapi/user/curriculum/updateLastLook",{
+    username:store.state.userInfo.username,
+    lastLook:store.state.lastLook
+  }).then((res) => {
+    console.log(res);
+  });
   localStorage.removeItem("token");
   store.commit("clearUserInfo"); //清空用户信息
+  store.commit("clearLastLook"); //清空用户最后浏览记录
+  piniaJob.reset(); //清空pinia数据
+  searchPinia.reset(); //清空pinia数据
   router.push("/login");
 };
 </script>

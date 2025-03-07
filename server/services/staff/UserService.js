@@ -119,6 +119,9 @@ return await curriculumModel.findOne({ username });
 },
 updateAvator:async({username,avator})=>{
   return curriculumModel.updateOne({username},{$set:{avator}})
+},
+updateLastLook:async({username,lastLook})=>{
+  return curriculumModel.updateOne({username},{$set:{lastLook}})
 }
 }
 module.exports = UserService

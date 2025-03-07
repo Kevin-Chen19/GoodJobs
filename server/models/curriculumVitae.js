@@ -20,6 +20,7 @@ const curriculumType = {
   experience:Array,//工作经验
   projects:Array,//项目经验
   honorary:Array,//荣誉奖项
+  lastLook:Array,//最近浏览
 }
 const curriculumVitaeModel = mongoose.model("curriculumVitae",new Schema(curriculumType) );
 module.exports = curriculumVitaeModel;

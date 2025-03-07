@@ -3,7 +3,8 @@ import createPersistedState from 'vuex-persistedstate'
 export default createStore({
   state: {
     isGetterRouter:false,
-    userInfo:{}
+    userInfo:{},
+    lastLook:[]
   },
   getters: {
   },
@@ -17,15 +18,29 @@ export default createStore({
         ...value
       }
     },
+    changeLastLook(state,value){
+      const isExist = state.lastLook.some(item=>item._id === value._id)
+      if(!isExist){
+        if(state.lastLook.length<3){
+          state.lastLook.push(value)
+        }else{
+          state.lastLook.splice(0,1)
+          state.lastLook.push(value)
+        }
+      }
+    },
       clearUserInfo(state){
         state.userInfo = {}
-      }
+      },
+      clearLastLook(state){
+        state.lastLook = []
+      } 
     },
   actions: {
   },
   modules: {
   },
   plugins:[createPersistedState({
-    paths:["userInfo"]//指定需要持久化的状态
+    paths:["userInfo","lastLook"]//指定需要持久化的状态
   })]
 })

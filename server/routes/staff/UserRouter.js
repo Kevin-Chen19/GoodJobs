@@ -25,4 +25,5 @@ staffUserRouter.post("/staffapi/user/curriculum/addProjects",UserController.addP
 staffUserRouter.post("/staffapi/user/curriculum/updateProjects",UserController.updateProjects);
 staffUserRouter.post("/staffapi/user/curriculum/deleteProjects",UserController.deleteProjects);
 staffUserRouter.post("/staffapi/user/curriculum/updateAvator",upload.single('avatorFile'),UserController.updateAvator);
+staffUserRouter.post("/staffapi/user/curriculum/updateLastLook",UserController.updateLastLook)
 module.exports = staffUserRouter;

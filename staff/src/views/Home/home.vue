@@ -662,12 +662,14 @@ const goToJobDetail = (value)=>{
   .Logo {
     width: 50px;
     height: 50px;
-    border: 2px solid black;
+    border: 1.5px solid black;
     margin-right: 10px;
     border-radius: 10px;
     overflow: hidden;
     img {
       width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
   }
   .Message {

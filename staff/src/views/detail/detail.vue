@@ -43,6 +43,7 @@ import { useRoute } from 'vue-router';
 const route = useRoute();
 import moment from 'moment';
 import { reactive } from 'vue';
+import store from '@/store';
 const job = reactive({
   _id: "67baabd935de20723d118221",
   pubUser: "湘潭凝智",
@@ -103,6 +104,7 @@ const companyLogo = computed(()=>{
 onMounted(()=>{
   let getJob = JSON.parse(route.query.job)
   Object.assign(job, getJob); // 将 getJob 的属性合并到 job 中
+  store.commit('changeLastLook', job);
 })
 </script>
 <style lang="scss" scoped>

@@ -110,8 +110,15 @@
     </div>
     <div class="mainRight">
       <el-card class="leftBox" shadow="hover">广告区</el-card>
-      <el-card class="leftBox" shadow="hover">广告区</el-card>
-      <el-card class="leftBox" shadow="hover">广告区</el-card>
+      <div class="lastLook">最近浏览</div>
+      <el-card v-if="lastLook.length !== 0" class="leftBox" shadow="hover" v-for="item in lastLook" @click="goToJobDetail(item)">
+        <div class="rightBoxTop">{{ item.jobName }}<p>{{ item.salary }}</p></div>
+        <div class="rightBoxMeddle"><p>{{item.type}}</p><p v-for="tag in item.tags">{{ tag }}</p></div>
+        <div class="leftBoxBottom">
+          <div class="companyLogo"><img :src="photo(item.companyMessage.companyLogo)" /></div>
+          <p>{{ item.companyMessage.companyName }}</p>
+        </div>
+      </el-card>
     </div>
   </div>
   <div class="getMoreBtn" @click="getMore()" v-if="!ifNoMore">更多职位</div>
@@ -151,6 +158,7 @@ import search from '@/components/search.vue';
 import { ref ,reactive ,onMounted ,watch} from 'vue';
 import { useRouter } from 'vue-router';
 import {useSearchStore} from '@/store/searchPinia'
+import store from '@/store';
 const searchStore = useSearchStore()
 import axios from 'axios';
 const router = useRouter()
@@ -165,6 +173,7 @@ const type = ref(0)
 const showJobs = reactive([])//展示的职位数组
 const pageNum = ref(1)//当前页数
 const ifNoMore = ref(false)//是否还有更多
+const lastLook = reactive([])//历史浏览的职位
 // 定义选项数组
 const options = [
   { label: '按专业筛选' },
@@ -354,8 +363,14 @@ const photo = (url) => {
     ? "http://localhost:3000" + url
     : "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png";
 };
+const getLastLook = () =>{
+  // 深拷贝数据
+const copiedData = JSON.parse(JSON.stringify(store.state.lastLook));
+lastLook.splice(0,lastLook.length,...copiedData)
+}
 onMounted(() => {
-  console.log(history.state.jobKind)
+  getLastLook()
+  console.log("store.state.lastLook",store.state.lastLook)
   if(history.state.jobKind === undefined){
     if(searchStore.jobList.length === 0 ){
       getJobs()
@@ -595,8 +610,8 @@ const ifChange = () =>{
 .leftBox{
   border-radius: 15px;
   width: 100%;
-  height: 160px;
   margin-top: 20px;
+  cursor: pointer;
 }
 .noMore{
   width: 100%;
@@ -653,5 +668,60 @@ const ifChange = () =>{
   cursor: pointer;
   background-color: #42adeb5a;
   color: rgba(17, 0, 255, 0.693);
+}
+.lastLook{
+  height: 50px;
+  padding-left: 8%;
+  line-height: 50px;
+  margin-top: 20px;
+  width: 92%;
+  border-radius: 10px;
+  background-color: #c6d4f1;
+}
+.rightBoxTop{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  p{
+    font-size: small;
+    color: rgba(0, 85, 255, 0.669);
+  }
+}
+.rightBoxMeddle{
+  display: flex;
+  width: 80%;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+  p{
+    font-size: small;
+    padding: 2px 4px;
+    border-radius: 6px;
+    background-color: rgba(218, 216, 216, 0.696);
+  }
+}
+.leftBoxBottom{
+  margin-top: 20px;
+  display: flex;
+  font-size: medium;
+  .companyLogo{
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    overflow: hidden;
+    img{
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+  p{
+    margin-left: 10px;
+    margin-top: 16px;
+    width: 80%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 }
 </style>
