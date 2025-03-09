@@ -1,7 +1,7 @@
 <template>
   <div class="topMess">
     <div class="topLeft">
-      <div class="time"><img src="../../icons/时钟.png" > {{ jobTime }}更新</div>
+      <div class="time"><img src="/public/icons/时钟.png" > {{ jobTime }}更新</div>
       <div class="name"><h1>{{ job.jobName }}</h1><h3>{{ job.salary }}</h3></div>
       <div class="tags">
         <p>{{ job.address }}</p>

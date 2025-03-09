@@ -54,7 +54,7 @@
                 <div
                   class="bgc"
                   :style="{
-                    backgroundImage: `url(${require('@/assets/swiper3.jpg')})`,
+                    backgroundImage: `url(/public/images/swiper3.jpg)`,
                   }"
                 ></div>
               </el-carousel-item>
@@ -62,7 +62,7 @@
                 <div
                   class="bgc"
                   :style="{
-                    backgroundImage: `url(${require('@/assets/swiper1.jpg')})`,
+                    backgroundImage: `url(/public/images/swiper1.jpg)`,
                   }"
                 ></div>
               </el-carousel-item>
@@ -70,7 +70,7 @@
                 <div
                   class="bgc"
                   :style="{
-                    backgroundImage: `url(${require('@/assets/swiper2.jpg')})`,
+                    backgroundImage: `url(/public/images/swiper2.jpg)`,
                   }"
                 ></div>
               </el-carousel-item>
@@ -90,7 +90,7 @@
             <div
               class="adBg"
               :style="{
-                backgroundImage: `url(${require('@/assets/ad1.jpg')})`,
+                backgroundImage: `url(/public/images/ad1.jpg)`,
               }"
             ></div>
             <p>"智汇谯城 才聚药都" 亳州市谯城区引才云平台</p>
@@ -101,7 +101,7 @@
             <div
               class="adBg"
               :style="{
-                backgroundImage: `url(${require('@/assets/ad2.jpg')})`,
+                backgroundImage: `url(/public/images/ad2.jpg)`,
               }"
             ></div>
             <p>大学生专属1V1简历定制</p>
@@ -112,7 +112,7 @@
             <div
               class="adBg"
               :style="{
-                backgroundImage: `url(${require('@/assets/ad3.jpg')})`,
+                backgroundImage: `url(/public/images/ad3.jpg)`,
               }"
             ></div>
             <p>爱上洛阳 留在洛阳</p>
@@ -137,7 +137,7 @@
             </div>
             <div class="companyMess">
               <div class="Logo">
-                <img :src="photo(item.companyMessage.companyLogo)" />
+                <img :src="photo(item.companyMessage.companyLogo)" loading="lazy"/>
               </div>
               <div class="Message">
                 <p>{{ item.companyMessage.companyName }}</p>

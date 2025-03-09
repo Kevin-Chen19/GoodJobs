@@ -1,7 +1,7 @@
 <template>
 <el-backtop :bottom="100">
     <div class="backTop">
-      <img src="../assets/回到顶部.png">
+      <img src="/public/images/回到顶部.png">
     </div>
 </el-backtop>
 </template>

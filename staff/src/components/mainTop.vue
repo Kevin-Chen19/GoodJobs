@@ -28,7 +28,7 @@
         </el-col>
         <el-col :span="4" class="avater_name">
           <div class="block">
-            <img class="touPic" src="../assets/默认图像.png" />
+            <img class="touPic" src="/public/images/默认图像.png" />
           </div>
           <p style="margin-left: 10px">{{ store.state.userInfo.username }}</p>
           <div class="lin">|</div>

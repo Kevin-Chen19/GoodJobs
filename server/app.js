@@ -29,7 +29,6 @@ app.use('/users', usersRouter);
 /**
  * /companyapi/*-企业端
  * /staffapi/*-求职端
- * /*adminapi/*-管理员
  */
 
 app.use(UserRouter);

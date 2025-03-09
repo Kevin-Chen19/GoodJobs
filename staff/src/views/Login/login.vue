@@ -6,15 +6,7 @@
         <div
           class="imgs"
           :style="{
-            backgroundImage: `url(${require('@/assets/firstImg.jpg')})`,
-          }"
-        ></div>
-      </el-carousel-item>
-      <el-carousel-item :key="2">
-        <div
-          class="imgs"
-          :style="{
-            backgroundImage: `url(${require('@/assets/firstImg.jpg')})`,
+            backgroundImage: `url('/public/images/firstImg.jpg')`,
           }"
         ></div>
       </el-carousel-item>
@@ -26,24 +18,37 @@
   <div class="lineIcon">
     <el-row :gutter="20">
     <el-col :span="4"></el-col>
-    <el-col :span="4"><img src="../../icons/建筑.png" ><h4>高薪名企</h4><p>1000万+名企在线</p></el-col>
-    <el-col :span="4"><img src="../../icons/入职.png" ><h4>极速入职</h4><p>快速约面试拿高薪</p></el-col>
-    <el-col :span="4"><img src="../../icons/喇叭.png" ><h4>有投必应</h4><p>24小时极速反馈</p></el-col>
-    <el-col :span="4"><img src="../../icons/权威认证.png" ><h4>行业权威</h4><p>3.74亿+职场人选择</p></el-col>
+    <el-col :span="4"><img src="/public/icons/建筑.png" loading="lazy"><h4>高薪名企</h4><p>1000万+名企在线</p></el-col>
+    <el-col :span="4"><img src="/public/icons/入职.png" loading="lazy"><h4>极速入职</h4><p>快速约面试拿高薪</p></el-col>
+    <el-col :span="4"><img src="/public/icons/喇叭.png" loading="lazy"><h4>有投必应</h4><p>24小时极速反馈</p></el-col>
+    <el-col :span="4"><img src="/public/icons/权威认证.png" loading="lazy"><h4>行业权威</h4><p>3.74亿+职场人选择</p></el-col>
     <el-col :span="4"></el-col>
   </el-row>
   </div>
-  <div class="jobType">
+  <div class="jobType"
+  :style="{backgroundImage: `url('/public/images/work.png')`}">
     <div class="blackCover"></div>
     <div class="top">
       <div>知名企业覆盖超1436万+</div>
       <el-tabs v-model="activeName" class="demo-tabs">
-        <el-tab-pane label="IT互联网" name="first"><img src="../../assets/IT互联网.png"></el-tab-pane>
-        <el-tab-pane label="制造业" name="second"><img src="../../assets/制造业.png"></el-tab-pane>
-        <el-tab-pane label="房地产" name="third"><img src="../../assets/房地产.png"></el-tab-pane>
-        <el-tab-pane label="消费品" name="fourth"><img src="../../assets/消费品.png"></el-tab-pane>
-        <el-tab-pane label="金融" name="fifth"><img src="../../assets/金融.png"></el-tab-pane>
-        <el-tab-pane label="服务业" name="sixth"><img src="../../assets/服务业.png"></el-tab-pane>
+        <el-tab-pane label="IT互联网" name="first">
+          <img data-src="/public/images/IT互联网.png" class="lazy-image" />
+        </el-tab-pane>
+        <el-tab-pane label="制造业" name="second">
+          <img data-src="/public/images/制造业.png" class="lazy-image" />
+        </el-tab-pane>
+        <el-tab-pane label="房地产" name="third">
+          <img data-src="/public/images/房地产.png" class="lazy-image" />
+        </el-tab-pane>
+        <el-tab-pane label="消费品" name="fourth">
+          <img data-src="/public/images/消费品.png" class="lazy-image" />
+        </el-tab-pane>
+        <el-tab-pane label="金融" name="fifth">
+          <img data-src="/public/images/金融.png" class="lazy-image" />
+        </el-tab-pane>
+        <el-tab-pane label="服务业" name="sixth">
+          <img data-src="/public/images/服务业.png" class="lazy-image" />
+        </el-tab-pane>
       </el-tabs>
     </div>   
   </div>
@@ -68,7 +73,7 @@
 import navTop from '@/components/navTop.vue'
 import loginCard from "@/components/loginCard.vue";
 import bottom from "@/components/bottom.vue";
-import { ref } from 'vue'
+import { ref ,onMounted} from 'vue'
 const dialogVisible = ref(false)
 const trueRegister = ref(false)
 const activeName = ref('first')
@@ -79,6 +84,51 @@ const toRegister = () => {
 const ifRegister = () => {
   dialogVisible.value = true
 }
+// 注册 Service Worker
+if ('serviceWorker' in navigator) {
+      navigator.serviceWorker
+        .register('../../service-worker.js')
+        .then((registration) => {
+          console.log('Service Worker 注册成功');
+        })
+        .catch((error) => {
+          console.error('Service Worker 注册失败:', error);
+        });
+    }
+    // 懒加载函数
+const initLazyLoading =()=> {
+      const lazyImages = document.querySelectorAll('.lazy-image');
+      const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const img = entry.target;
+            const imageUrl = img.dataset.src;
+          // 检查缓存中是否存在图片
+          caches.match(imageUrl).then((cachedResponse) => {
+            if (cachedResponse) {
+              // 如果缓存中存在，直接设置 src
+              img.src = imageUrl;
+            } else {
+              // 如果缓存中不存在，发起网络请求
+              fetch(imageUrl).then((response) => {
+                if (response.ok) {
+                  img.src = imageUrl;
+                }
+              });
+            }
+          });
+          observer.unobserve(img);
+          }
+        });
+      });
+
+      lazyImages.forEach((img) => {
+        observer.observe(img); // 开始观察每个图片
+      });
+    }
+  onMounted(()=>{
+  initLazyLoading()
+  })
 </script>
 <style lang="scss" scoped>
 .loginLine {
@@ -113,9 +163,13 @@ const ifRegister = () => {
     width: 50px;
   }
 }
+.lazy-image {
+  width: 100%; /* 设置图片宽度 */
+  height: auto; /* 保持图片比例 */
+  background: #f0f0f0; /* 占位符背景色 */
+}
 .jobType{
   position: relative;
-  background-image: url("../../assets/work.png");
   background-size: cover;
   background-position: center;
   text-align: center;

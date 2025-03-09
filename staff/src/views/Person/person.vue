@@ -11,7 +11,7 @@
           :auto-upload="false"
         >
           <div class="Avatar">
-            <img v-if="!personMessage.avator" src= "../../assets/默认证件.png" alt="" />
+            <img v-if="!personMessage.avator" src= "/public/images/默认证件.png" alt="" />
             <img v-if="personMessage.avator" :src= "uploadAvatar"  />
           </div>
         </el-upload>
@@ -38,7 +38,7 @@
       <div class="MessageItem" id="part2">
         <div class="itemTop">
           <div class="title">
-            <img src="../../icons/求职状态.png" />求职状态
+            <img src="/public/icons/求职状态.png" />求职状态
           </div>
           <div class="edit" @click="selects(2)">编辑</div>
         </div>
@@ -53,7 +53,7 @@
       <div class="MessageItem" id="part3">
         <div class="itemTop">
           <div class="title">
-            <img src="../../icons/教育经历.png" />教育经历
+            <img src="/public/icons/教育经历.png" />教育经历
           </div>
           <div class="additems" @click="(selectSome = -1 , selects(0) )">+ 添加教育经历</div>
         </div>
@@ -76,7 +76,7 @@
       <div class="MessageItem" id="part4">
         <div class="itemTop">
           <div class="title">
-            <img src="../../icons/求职意向.png" />求职意向
+            <img src="/public/icons/求职意向.png" />求职意向
           </div>
           <div class="edit" @click="selects(4)">编辑</div>
         </div>
@@ -104,7 +104,7 @@
       <div class="MessageItem" id="part5">
         <div class="itemTop">
           <div class="title">
-            <img src="../../icons/个人优势.png" />个人优势
+            <img src="/public/icons/个人优势.png" />个人优势
           </div>
           <div class="edit" @click="selects(5)">编辑</div>
         </div>
@@ -113,7 +113,7 @@
       <div class="MessageItem" id="part6">
         <div class="itemTop">
           <div class="title">
-            <img src="../../icons/工作经历.png" />工作/实习经历
+            <img src="/public/icons/工作经历.png" />工作/实习经历
           </div>
           <div class="additems" @click="(selectSome=-1,selects(6))">+ 添加工作经验</div>
         </div>
@@ -145,7 +145,7 @@
       <div class="MessageItem" id="part7">
         <div class="itemTop">
           <div class="title">
-            <img src="../../icons/项目经历.png" />项目经历
+            <img src="/public/icons/项目经历.png" />项目经历
           </div>
           <div class="additems" @click="(selectSome=-1, selects(7))">+ 添加项目经历</div>
         </div>
@@ -167,12 +167,12 @@
       <div class="MessageItem" id="part8">
         <div class="itemTop">
           <div class="title">
-            <img src="../../icons/证书荣誉.png" />证书荣誉
+            <img src="/public/icons/证书荣誉.png" />证书荣誉
           </div>
           <div class="additems" @click="selects(3)">+ 添加荣誉证书</div>
         </div>
         <p class="honorary" v-for="(item, index) in personMessage.honorary">
-          {{ item }} <img src="../../icons//删除.png"  @click="deleteHonorary(index)"/>
+          {{ item }} <img src="/public/icons/删除.png"  @click="deleteHonorary(index)"/>
         </p>
       </div>
     </div>
