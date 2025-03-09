@@ -32,7 +32,7 @@
       <div class="noPics" v-if="!ifHaveAlbum">您暂时没有上传，点我上传吧~</div>
       <el-carousel :interval="4000" type="card" height="300px" v-if="ifHaveAlbum">
         <el-carousel-item v-for="(item, index) in companyAlbum" :key="index">
-          <img :src="require(`@/assets/${item}`)" />
+          <img :src="getImageUrl(item)" loading="lazy"/>
         </el-carousel-item>
       </el-carousel>
     </div>
@@ -68,6 +68,9 @@ onMounted(async()=>{
     store.commit("changeCompanyMessage", result.data.Message[0]);
     store.commit("changeAvatarUrl", result.data.Message[0].companyLogo);
 })
+const getImageUrl=(filename) =>{
+    return `/public/images/${filename}`;
+}
 const EditMess =()=>{
   router.push({ path: '/companyHome', query: { key: 'edit' } });
 }

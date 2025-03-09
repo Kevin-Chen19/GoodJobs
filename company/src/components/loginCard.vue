@@ -29,7 +29,6 @@ import axios from "axios";
 const router = useRouter();
 const store = useStore();
 const emits = defineEmits(["ifRegister"]);
-const activeName = ref("first");
 const ifRegister = ref(false);
 const props = defineProps({
   trueRegister:{

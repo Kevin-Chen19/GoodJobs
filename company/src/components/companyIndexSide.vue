@@ -11,21 +11,21 @@
         <el-menu-item index="1">
           <div
             class="icons"
-            :style="{ backgroundImage: `url(${require('@/assets/主页.png')})` }"
+            :style="{ backgroundImage: `url('/public/icons/主页.png')` }"
           ></div>
           <span>企业主页</span>
         </el-menu-item>
         <el-menu-item index="2">
           <div
             class="icons"
-            :style="{ backgroundImage: `url(${require('@/assets/职位.png')})` }"
+            :style="{ backgroundImage: `url('/public/icons/职位.png')` }"
           ></div>
           <span>职位中心</span>
         </el-menu-item>
         <el-menu-item index="3">
           <div
             class="icons"
-            :style="{ backgroundImage: `url(${require('@/assets/互动.png')})` }"
+            :style="{ backgroundImage: `url('/public/icons/互动.png')` }"
           ></div>
           <span>互动</span>
         </el-menu-item>
@@ -34,7 +34,7 @@
         <el-menu-item index="4">
           <div
             class="icons"
-            :style="{ backgroundImage: `url(${require('@/assets/客服.png')})` }"
+            :style="{ backgroundImage: `url('/public/icons/客服.png')` }"
           ></div>
           <span>客服帮助</span>
         </el-menu-item>

@@ -8,7 +8,7 @@
       <div class="loginout" @click="LoginOut()">退出登录</div>
       <div>|</div>
       <el-avatar :size="50" :src="avatarUrl" />
-      <p>湘潭凝智</p>
+      <p>{{ store.state.userInfo.username }}</p>
     </div>
   </div>
 </template>
