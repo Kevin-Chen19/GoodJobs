@@ -60,7 +60,7 @@
 <script setup>
 import { ref, reactive ,defineEmits,h ,onMounted} from 'vue';
 import { ElNotification } from 'element-plus';
-import axios from 'axios';
+import axios from '../../util/axios.config';
 const emit = defineEmits(['sbmitForm']);
 const ruleFormRef = ref();
 const sexArry = ['男','女'];

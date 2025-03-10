@@ -24,7 +24,7 @@
   </template>
   
   <script setup>
-  import axios from 'axios';
+  import axios from "../../util/axios.config";
   import { ref, reactive ,defineEmits} from 'vue'
   import store from '@/store';
   const emit = defineEmits(['sbmitForm'])

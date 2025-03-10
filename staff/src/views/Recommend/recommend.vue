@@ -65,7 +65,7 @@
 import backTop from "@/components/backTop.vue";
 import { ArrowDown } from '@element-plus/icons-vue'
 import { ref, reactive ,watch, onMounted} from "vue";
-import axios from "axios";
+import axios from "../../util/axios.config";
 import store from "@/store";
 import router from "@/router";
 import { useJobStore } from "../../store/pinia_Job";

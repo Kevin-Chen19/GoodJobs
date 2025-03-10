@@ -238,7 +238,7 @@ import experience from "@/components/personMessage/experience.vue";
 import projects from "@/components/personMessage/projects.vue";
 import { ref, reactive, onMounted ,computed} from "vue";
 import upload from '@/util/upload'
-import axios from "axios";
+import axios from "../../util/axios.config";
 import store from "@/store";
 const hoverWitch = reactive([false, false, false]);
 let personMessage = reactive({});

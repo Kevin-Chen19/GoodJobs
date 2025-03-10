@@ -14,7 +14,11 @@ const UserController = {
     const token = JWT.generate({
       _id:result.data._id.toString(),
       username:result.data.username
-    },"1d");
+    }).access_token;
+    const refreshToken = JWT.generate({
+      _id:result.data._id.toString(),
+      username:result.data.username
+    }).refresh_token;
     res.header("Authorization",token);
      res.send({
       code:200,
@@ -24,7 +28,8 @@ const UserController = {
         avatar:result.data.avatar,
         role:result.data.role
       },
-      token:token
+      token:token,
+      refreshToken:refreshToken
     })
    }
 },
@@ -44,11 +49,11 @@ curriculum:async(req,res)=>{
 },
 getCurriculum:async(req,res)=>{
   const {username} = req.params
-  const result = await UserService.getCurriculum({username});
-  res.send({
-    ActionType:"ok",
-    data:result
-  })
+    const result = await UserService.getCurriculum({username});
+      res.send({
+        ActionType:"ok",
+        data:result
+      })
 },
 addAducation:async(req,res)=>{
   await UserService.addAducation(req.body);

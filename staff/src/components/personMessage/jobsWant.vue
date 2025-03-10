@@ -57,7 +57,7 @@
 import moreJobKinds from '@/components/moreJobKinds.vue';
 import moreAddress from '@/components/moreAddress.vue';
 import { ref, reactive,onMounted ,defineEmits} from 'vue'
-import axios from 'axios';
+import axios from "../../util/axios.config";
 const emit = defineEmits(['sbmitForm'])
 const props = defineProps({
   personMessage: {

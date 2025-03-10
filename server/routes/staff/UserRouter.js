@@ -1,14 +1,15 @@
 var express = require('express');
 const UserController = require('../../controllers/staff/UserController');
 var staffUserRouter = express.Router();
+const authMiddleware = require('../../middleware/authMiddleware');
 //图片上传模块
 const multer = require('multer');
 const upload = multer({dest: 'public/avataruploads/'});
 
 staffUserRouter.post("/staffapi/user/login",UserController.login);
 staffUserRouter.post("/staffapi/user/register",UserController.register);
-staffUserRouter.post("/staffapi/user/curriculum",UserController.curriculum);
-staffUserRouter.get("/staffapi/user/getCurriculum/:username",UserController.getCurriculum);
+staffUserRouter.post("/staffapi/user/curriculum",authMiddleware,UserController.curriculum);
+staffUserRouter.get("/staffapi/user/getCurriculum/:username",authMiddleware,UserController.getCurriculum);
 staffUserRouter.post("/staffapi/user/curriculum/addAducation",UserController.addAducation);
 staffUserRouter.post("/staffapi/user/curriculum/updateBase",UserController.updateBase);
 staffUserRouter.post("/staffapi/user/curriculum/updatejobStatus",UserController.updatejobStatus);

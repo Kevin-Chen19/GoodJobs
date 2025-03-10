@@ -48,7 +48,7 @@ import {useSearchStore} from "@/store/searchPinia.js"
 const route = useRoute();
 const router = useRouter();
 const activeIndex = ref("1");
-import axios from "axios";
+import axios from "../util/axios.config";
 const handleSelect = (keyPath) => {
   console.log(keyPath);
   //获取当前路由

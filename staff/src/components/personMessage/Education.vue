@@ -71,7 +71,7 @@
 <script setup>
 import { ref, reactive, defineEmits, watch ,defineProps} from "vue";
 import moment from "moment";
-import axios from "axios";
+import axios from "../../util/axios.config";
 import store from "@/store";
 const emit = defineEmits(["sbmitForm","register"]);
 const ruleFormRef = ref();

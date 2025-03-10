@@ -23,6 +23,30 @@ const JobsController = {
       ActionType:"ok",
       jobsKindList
     })
+  },
+  refreshToken:async(req,res)=>{
+    const refreshToken = req.query.refreshToken
+    console.log(refreshToken)
+    if(!refreshToken){
+      return res.send({
+        code:401,
+        msg:"Refresh token is required"
+      })
+    }
+    const data = await JobsService.refreshToken(refreshToken)
+    if(data.code === 200){
+      res.send({
+        ActionType:"ok",
+        code:200,
+        token:data.token
+      })
+    }else{
+      res.send({
+        ActionType:"ok",
+        code:401,
+        msg:data.msg
+      })
+    }
   }
 }
 module.exports = JobsController

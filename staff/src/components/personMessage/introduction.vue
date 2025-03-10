@@ -30,7 +30,7 @@
 </template>
 
 <script setup>
-import axios from 'axios';
+import axios from "../../util/axios.config";
 import { ref, reactive,onMounted ,defineEmits} from 'vue'
 const emit = defineEmits(['sbmitForm'])
 const props = defineProps({

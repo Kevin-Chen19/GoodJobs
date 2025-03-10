@@ -1,4 +1,5 @@
 const JobsModel = require("../../models/JobsModel");
+const JWT = require("../../util/JWT");
 const JobsService = {
   getList:async()=>{
     return  JobsModel.find().sort({editTime:-1}) ;
@@ -43,6 +44,23 @@ const JobsService = {
       .limit(limit)
       .skip(skip)
       .exec();
-  }
+  },
+  refreshToken:async(refreshToken)=>{
+    JWT.verify(refreshToken,2).then((data)=>{
+      const accessToken = JWT.generate({
+          _id:data._id.toString(),
+          username:data.username
+      }).access_token;
+      return {
+        code:200,
+        token:accessToken
+      }
+  }).catch((err)=>{
+     return {
+       code:401,
+       msg:"Refresh token is invalid"
+     }
+  })
+}
 }
 module.exports = JobsService;

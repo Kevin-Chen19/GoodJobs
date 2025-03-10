@@ -160,7 +160,7 @@ import { useRouter } from 'vue-router';
 import {useSearchStore} from '@/store/searchPinia'
 import store from '@/store';
 const searchStore = useSearchStore()
-import axios from 'axios';
+import axios from '../../util/axios.config';
 const router = useRouter()
 const input2 = ref('')
 const centerDialogVisible = ref(false)

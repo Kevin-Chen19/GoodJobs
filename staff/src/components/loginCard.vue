@@ -25,7 +25,7 @@
 import { ref, reactive, defineEmits, watch } from "vue";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
-import axios from "axios";
+import axios from '../util/axios.config';
 const router = useRouter();
 const store = useStore();
 const emits = defineEmits(["ifRegister"]);
@@ -65,6 +65,7 @@ const submitFirmForm = (formRef) => {
         if (res.data.code === 200) {
           store.commit("changeUserInfo", res.data.data);
           localStorage.setItem("token", res.data.token);
+          localStorage.setItem("refeshToken", res.data.refreshToken)
           store.commit("changeGetterRouter", false);
           axios.get("/staffapi/user/getCurriculum/"+ store.state.userInfo.username).then((res)=>{
             if (res.data.data.length !== 0) {

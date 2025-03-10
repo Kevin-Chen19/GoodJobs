@@ -25,7 +25,7 @@
 import { ref, reactive , defineEmits ,watch} from "vue";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
-import axios from "axios";
+import axios from "../util/axios.config";
 const router = useRouter();
 const store = useStore();
 const emits = defineEmits(["ifRegister"]);

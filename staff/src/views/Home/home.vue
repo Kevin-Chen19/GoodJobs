@@ -163,7 +163,7 @@ import bottom from "@/components/bottom.vue";
 import search from "@/components/search.vue";
 import { ref, onMounted, } from "vue";
 import { useRouter } from "vue-router";
-import axios from "axios";
+import axios from "../../util/axios.config";
 const router = useRouter();
 const ifByProfession = ref(true);
 const activeTab = ref("profession");
@@ -461,7 +461,10 @@ const toJob = (job) => {
 };
 onMounted(async () => {
   const result = await axios.get("/staffapi/jobs/list");
-  jobs.value = result.data.jobsList;
+  console.log(result)
+  if(result){
+    jobs.value = result.data.jobsList;
+  }
 });
 const photo = (url) => {
   return url

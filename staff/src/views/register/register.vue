@@ -118,7 +118,7 @@ import { useRouter } from 'vue-router';
 import { reactive, ref, h} from 'vue';
 import { ElNotification } from 'element-plus'
 import store from '@/store';
-import axios from 'axios';
+import axios from '../../util/axios.config';
 const router = useRouter();
 const selectWhich = ref(0);
 const ifEdit = ref(false);
