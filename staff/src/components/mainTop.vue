@@ -87,6 +87,8 @@ const outLogin = () => {
     lastLook:store.state.lastLook
   }).then((res) => {
     console.log(res);
+  }).catch((err) => {
+    console.log(err);
   });
   localStorage.removeItem("token");
   store.commit("clearUserInfo"); //清空用户信息

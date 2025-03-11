@@ -51,7 +51,7 @@ import comNavTop from '@/components/comNavTop.vue'
 import { reactive, ref, onMounted} from 'vue'
 import { useRouter ,useRoute} from 'vue-router'
 import uploadPic from '@/components/uploadPic.vue'
-import axios from 'axios'
+import axios from '../../util/axios.config'
 import store from '@/store'
 import upload from '@/util/upload'
 const router = useRouter()
@@ -101,14 +101,18 @@ const submitForm = (formEl) => {
   formEl.validate(async(valid) => {
     if (valid) {
       ruleForm.director = store.state.userInfo.username
-      const res = await upload("/companyapi/user/messageAdd", ruleForm)
-      console.log(res.ActionType)
-      if(res.ActionType == "ok"){
-        alert("提交成功")
-        router.push("/companyIndex")
+      try{
+        const res = await upload("/companyapi/user/messageAdd", ruleForm)
+        console.log(res.ActionType)
+        if(res.ActionType == "ok"){
+          alert("提交成功")
+          router.push("/companyIndex")
+        }else {
+        console.log('error submit!')
       }
-    } else {
-      console.log('error submit!')
+      } catch(err){
+        console.log(err)
+      }
     }
   })
 }
@@ -117,14 +121,18 @@ const editForm = (formEl) => {
   formEl.validate(async(valid) => {
     if (valid) {
       ruleForm.director = store.state.userInfo.username
-      const res = await upload("/companyapi/user/messageEdit", ruleForm)
-      console.log(res.ActionType)
-      if(res.ActionType == "ok"){
-        alert("修改成功")
-        router.push("/companyIndex")
+      try{
+        const res = await upload("/companyapi/user/messageEdit", ruleForm)
+        console.log(res.ActionType)
+        if(res.ActionType == "ok"){
+          alert("修改成功")
+          router.push("/companyIndex")
+        }else {
+        console.log('error submit!')
       }
-    } else {
-      console.log('error submit!')
+      } catch(err){
+        console.log(err)
+      }
     }
   })
 }
@@ -137,15 +145,19 @@ const handleChange = (file) => {
 const director = store.state.userInfo.username;
 onMounted(async()=>{
   ifEdit.value = route.query.key == "edit"
-  const result = await axios.get("/companyapi/user/getMessage/"+ director);
-  if(result.data.Message[0] != null){
-    ruleForm._id = result.data.Message[0]._id;
-    ruleForm.companyName = result.data.Message[0].companyName;
-    ruleForm.companyAddress = result.data.Message[0].companyAddress;
-    ruleForm.introduction = result.data.Message[0].introduction;
-    ruleForm.companyIndustry = result.data.Message[0].companyIndustry;
-    ruleForm.staffNumber = result.data.Message[0].staffNumber;
-    ruleForm.companyLogo = result.data.Message[0].companyLogo;
+  try{
+    const result = await axios.get("/companyapi/user/getMessage/"+ director);
+    if(result.data.Message[0] != null){
+      ruleForm._id = result.data.Message[0]._id;
+      ruleForm.companyName = result.data.Message[0].companyName;
+      ruleForm.companyAddress = result.data.Message[0].companyAddress;
+      ruleForm.introduction = result.data.Message[0].introduction;
+      ruleForm.companyIndustry = result.data.Message[0].companyIndustry;
+      ruleForm.staffNumber = result.data.Message[0].staffNumber;
+      ruleForm.companyLogo = result.data.Message[0].companyLogo;
+    }
+  }catch(err){
+    console.log(err)
   }
 })
 </script>

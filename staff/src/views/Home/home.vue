@@ -460,10 +460,13 @@ const toJob = (job) => {
   })
 };
 onMounted(async () => {
-  const result = await axios.get("/staffapi/jobs/list");
-  console.log(result)
-  if(result){
-    jobs.value = result.data.jobsList;
+  try{
+    const result = await axios.get("/staffapi/jobs/list");
+    if(result){
+      jobs.value = result.data.jobsList;
+    }
+  }catch(err){
+    console.log(err);
   }
 });
 const photo = (url) => {

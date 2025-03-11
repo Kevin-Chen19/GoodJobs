@@ -104,7 +104,7 @@ const handleCommand2 = (command) => {
   jobStore.select2 = command
 }
 const getJobs = ()=> {
-   axios.get('/staffapi/jobs/KindList', {
+    axios.get('/staffapi/jobs/KindList', {
     params: {
       pageNum: pageNum.value,
       kinds:[selectMenu.value === "最新推荐" ? "不限" : selectMenu.value],
@@ -134,6 +134,8 @@ const getJobs = ()=> {
     jobStore.select1 = select1.value
     jobStore.select2 = select2.value
     jobStore.selectMenu = selectMenu.value
+  }).catch((err) => {
+    console.log(err)
   })
 }
 //匹配公司标志
@@ -146,6 +148,8 @@ onMounted(() => {
   axios.get("/staffapi/user/getCurriculum/"+ store.state.userInfo.username).then((res) => {
     console.log(res.data.data[0].jobKinds)
     menu.value.push(...res.data.data[0].jobKinds)
+  }).catch((err) => {
+    console.log(err)
   })
   console.log("jobList",jobStore.jobList);
   if(jobStore.jobList.length === 0){

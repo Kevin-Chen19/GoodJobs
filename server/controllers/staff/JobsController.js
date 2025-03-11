@@ -26,7 +26,6 @@ const JobsController = {
   },
   refreshToken:async(req,res)=>{
     const refreshToken = req.query.refreshToken
-    console.log(refreshToken)
     if(!refreshToken){
       return res.send({
         code:401,
@@ -43,7 +42,7 @@ const JobsController = {
     }else{
       res.send({
         ActionType:"ok",
-        code:401,
+        code:402,
         msg:data.msg
       })
     }

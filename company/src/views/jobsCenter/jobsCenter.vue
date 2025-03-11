@@ -166,7 +166,7 @@
 <script setup>
 import { computed, reactive, ref, onMounted } from "vue";
 import store from "@/store/index.js";
-import axios from "axios";
+import axios from "../../util/axios.config";
 import moment from "moment";
 moment.locale("zh-cn");
 const centerDialogVisible = ref(false); //发布职位弹窗
@@ -493,7 +493,9 @@ const handleDelete = (_id) => {
     } else {
       alert("删除失败");
     }
-  });
+  }).catch((err)=>{
+    console.log(err)
+  })
 };
 const resetForm = (formRef) => {
   formRef.resetFields();
@@ -512,7 +514,9 @@ const submitForm = (formRef) => {
         } else {
           alert("发布失败");
         }
-      });
+      }).catch((err)=>{
+        console.log(err)
+      })
     } else {
       console.log("error submit!!");
       return false;
@@ -532,7 +536,9 @@ const updateForm = (formRef) => {
         } else {
           alert("修改失败");
         }
-      });
+      }).catch((err)=>{
+        console.log(err)
+      })
     } else {
       console.log("error submit!!");
       return false;
@@ -547,8 +553,12 @@ onMounted(() => {
   getList();
 });
 const getList = async () => {
-  const res = await axios.get("/companyapi/jobs/list/" + pubUser);
-  tableData.value = res.data.jobsList;
+  try{
+    const res = await axios.get("/companyapi/jobs/list/" + pubUser);
+    tableData.value = res.data.jobsList;
+  }catch(err){
+    console.log(err)
+  }
 };
 </script>
 <style lang="scss" scoped>

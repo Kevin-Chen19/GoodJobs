@@ -6,4 +6,5 @@ JobsRouter.post("/companyapi/jobs/jobsAdd",JobsController.jobsAdd);
 JobsRouter.get("/companyapi/jobs/list/:pubUser",authMiddleware,JobsController.jobsList);
 JobsRouter.post("/companyapi/jobs/jobsUpdate",JobsController.jobsUpdate);
 JobsRouter.post("/companyapi/jobs/jobsDelete/:_id",JobsController.jobsDelete);
+JobsRouter.get("/companyapi/refreshToken",JobsController.refreshToken)
 module.exports = JobsRouter;

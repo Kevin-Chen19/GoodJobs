@@ -226,17 +226,17 @@
 </template>
 
 <script setup>
+import { ref, reactive, onMounted ,computed ,defineAsyncComponent} from "vue";
 import backTop from "../../components/backTop.vue";
-import bottom from "@/components/bottom.vue";
-import Education from "@/components/personMessage/Education.vue";
-import baseMess from "@/components/personMessage/baseMess.vue";
-import jobStatusMess from "@/components/personMessage/jobStatusMess.vue";
-import jobsWant from "@/components/personMessage/jobsWant.vue";
-import introduction from "@/components/personMessage/introduction.vue";
-import honorary from "@/components/personMessage/honorary.vue";
-import experience from "@/components/personMessage/experience.vue";
-import projects from "@/components/personMessage/projects.vue";
-import { ref, reactive, onMounted ,computed} from "vue";
+const bottom = defineAsyncComponent(()=>import("@/components/bottom.vue"));
+const education = defineAsyncComponent(()=>import("@/components/personMessage/Education.vue"))
+const baseMess = defineAsyncComponent(()=>import("@/components/personMessage/baseMess.vue"))
+const jobStatusMess = defineAsyncComponent(()=>import("@/components/personMessage/jobStatusMess.vue"));
+const jobsWant = defineAsyncComponent(()=>import("@/components/personMessage/jobsWant.vue"));
+const introduction = defineAsyncComponent(()=>import("@/components/personMessage/introduction.vue"));
+const honorary = defineAsyncComponent(()=>import("@/components/personMessage/honorary.vue"));
+const experience = defineAsyncComponent(()=>import("@/components/personMessage/experience.vue"));
+const projects = defineAsyncComponent(()=>import("@/components/personMessage/projects.vue"))
 import upload from '@/util/upload'
 import axios from "../../util/axios.config";
 import store from "@/store";
@@ -262,15 +262,18 @@ const handleChange = async (file) => {
   avator.value = URL.createObjectURL(file.raw)
   avatorFile.value = file.raw
   console.log(avatorFile.value , avator.value )
-  const res = await upload("/staffapi/user/curriculum/updateAvator",{
-    username:store.state.userInfo.username,
-    avator:avator.value,
-    avatorFile:avatorFile.value
-  })
-  if (res.ActionType === "ok") {
-    getPersonMessage();
+  try{
+    const res = await upload("/staffapi/user/curriculum/updateAvator",{
+      username:store.state.userInfo.username,
+      avator:avator.value,
+      avatorFile:avatorFile.value
+    })
+    if (res.ActionType === "ok") {
+      getPersonMessage();
+    }
+  }catch(err){
+    console.log(err);
   }
-  console.log(res)
 }
 const handleClick = (e) => {
   e.preventDefault();
@@ -307,13 +310,18 @@ const pubJobStatusMess = (value) => {
     if (res.data.ActionType === "ok") {
       getPersonMessage();
     }
-  });
+  }).catch(err=>{
+    console.log(err);
+  })
+ 
 };
 const deleteHonorary = (index)=>{
-  axios.post("/staffapi/user/curriculum/deleteHonorary",{username:personMessage.username,index}).then((res)=>{
+     axios.post("/staffapi/user/curriculum/deleteHonorary",{username:personMessage.username,index}).then((res)=>{
     if(res.data.ActionType === "ok"){
       getPersonMessage();
     }
+  }).catch(err=>{
+    console.log(err);
   })
 }
 const refreshMessage = () => {

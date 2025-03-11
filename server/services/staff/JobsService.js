@@ -46,21 +46,23 @@ const JobsService = {
       .exec();
   },
   refreshToken:async(refreshToken)=>{
-    JWT.verify(refreshToken,2).then((data)=>{
+    const result = JWT.verify(refreshToken,1); 
+    console.log(result);
+    if(result){
       const accessToken = JWT.generate({
-          _id:data._id.toString(),
-          username:data.username
+          _id:result._id.toString(),
+          username:result.username
       }).access_token;
       return {
         code:200,
         token:accessToken
       }
-  }).catch((err)=>{
-     return {
-       code:401,
-       msg:"Refresh token is invalid"
-     }
-  })
+    }else{
+      return {
+        code:402,
+        msg:"refreshToken失效"
+      }
+    }
 }
 }
 module.exports = JobsService;

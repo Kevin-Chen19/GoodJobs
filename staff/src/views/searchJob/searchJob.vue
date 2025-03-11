@@ -198,13 +198,18 @@ const toSearch = (value) => {
   getMore()
 }
 const getSearchJobs = (num)=>{
-  axios.get("/staffapi/jobs/searchList",{params:{pageNum:num,keyword:input2.value}}).then((res)=>{
+  try{
+    axios.get("/staffapi/jobs/searchList",{params:{pageNum:num,keyword:input2.value}}).then((res)=>{
     console.log(res.data.jobsKindList)
     showJobs.splice(0,showJobs.length,...res.data.jobsKindList)
     if(res.data.jobsKindList.length < 5){
       ifNoMore.value = true
     }
   })
+  }catch(err){
+    console.log(err)
+  }
+  
 }
 // 定义一个方法来处理选项的点击事件
 function selectOption(index) {
@@ -320,7 +325,7 @@ const getMore = () => {
 }
 //获取职位
 const getJobs = ()=> {
-   axios.get('/staffapi/jobs/KindList', {
+    axios.get('/staffapi/jobs/KindList', {
     params: {
       pageNum: pageNum.value,
       subject: subject.value,
@@ -355,6 +360,8 @@ const getJobs = ()=> {
     searchStore.select3 = select3.value
     searchStore.selectedIndex = selectedIndex.value
     searchStore.input2 = input2.value
+  }).catch((err)=>{
+    console.log(err)
   })
 }
 //匹配公司标志

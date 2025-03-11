@@ -63,6 +63,7 @@ const submitFirmForm = (formRef) => {
         if(res.data.code === 200){
           store.commit("changeUserInfo",res.data.data);
           localStorage.setItem("token",res.data.token)
+          localStorage.setItem("refeshToken", res.data.refreshToken)
           store.commit("changeGetterRouter",false)
           router.push("/companyIndex")
         }else if(res.data.code === 0){

@@ -28,6 +28,29 @@ const JobsController = {
     res.send({
       ActionType:"ok"
     })
-  }
+  },
+  refreshToken:async(req,res)=>{
+      const refreshToken = req.query.refreshToken
+      if(!refreshToken){
+        return res.send({
+          code:401,
+          msg:"Refresh token is required"
+        })
+      }
+      const data = await JobsService.refreshToken(refreshToken)
+      if(data.code === 200){
+        res.send({
+          ActionType:"ok",
+          code:200,
+          token:data.token
+        })
+      }else{
+        res.send({
+          ActionType:"ok",
+          code:402,
+          msg:data.msg
+        })
+      }
+    }
 }
 module.exports = JobsController

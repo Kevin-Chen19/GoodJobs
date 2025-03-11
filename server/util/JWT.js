@@ -4,8 +4,8 @@ const refresh_secret = 'Ckx';//长期密钥
 let refreshTokens = [];
 const JWT = {
   generate(value){//value是要加密的数据
-    let accsessToken = jsonwebtoken.sign(value,secret,{expiresIn:'15s'})
-    let refreshToken = jsonwebtoken.sign(value,refresh_secret,{expiresIn:'7d'})
+    let accsessToken = jsonwebtoken.sign(value,secret,{expiresIn:'10s'})
+    let refreshToken = jsonwebtoken.sign(value,refresh_secret,{expiresIn:'1d'})
     refreshTokens.push(refreshToken)
     // 返回 tokens
     return {

@@ -42,7 +42,7 @@
 import { ref, onMounted, reactive, computed} from "vue";
 import { Right } from "@element-plus/icons-vue";
 import { useRouter} from "vue-router";
-import axios from "axios";
+import axios from "../../util/axios.config";
 import store from "@/store";
 const router = useRouter();
 const companyAlbum = ["swiper1.jpg", "swiper2.jpg", "swiper3.jpg"];
@@ -58,15 +58,14 @@ const companyMessage = reactive({
 });
 const director = store.state.userInfo.username;
 onMounted(async()=>{
-  const result = await axios.get("/companyapi/user/getMessage/"+ director);
-    companyMessage.companyName = result.data.Message[0].companyName;
-    companyMessage.companyAddress = result.data.Message[0].companyAddress;
-    companyMessage.introduction = result.data.Message[0].introduction;
-    companyMessage.companyIndustry = result.data.Message[0].companyIndustry;
-    companyMessage.staffNumber = result.data.Message[0].staffNumber;
-    companyMessage.companyLogo = result.data.Message[0].companyLogo;
+  try{
+    const result = await axios.get("/companyapi/user/getMessage/"+ director);
+    Object.assign(companyMessage, result.data.Message[0]);
     store.commit("changeCompanyMessage", result.data.Message[0]);
     store.commit("changeAvatarUrl", result.data.Message[0].companyLogo);
+  }catch(err){
+    console.log(err)
+  }
 })
 const getImageUrl=(filename) =>{
     return `/public/images/${filename}`;

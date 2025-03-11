@@ -259,6 +259,8 @@ const submitForm = () => {
           }else{
             console.log("提交失败")
           }
+        }).catch((err)=>{
+          console.log(err)
         })
       }
     } else {
