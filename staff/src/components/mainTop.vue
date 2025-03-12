@@ -1,41 +1,44 @@
 <template>
   <el-affix>
-    <div class="mainTop">
-      <el-row>
-        <el-col :span="4"
-          ><div class="Icon">
-            <div class="name">好工作</div>
-          </div>
-        </el-col>
-        <el-col :span="16">
-          <el-menu
-            :default-active="activeIndex"
-            class="el-menu-demo"
-            mode="horizontal"
-            :ellipsis="false"
-            @select="handleSelect"
-          >
-            <el-menu-item index="首页">首页</el-menu-item>
-            <el-menu-item index="职位推荐">职位推荐</el-menu-item>
-            <el-menu-item index="职位搜索">职位搜索</el-menu-item>
-            <el-sub-menu index="4">
-              <template #title>求职服务</template>
-              <el-menu-item index="简历模版">简历模版</el-menu-item>
-              <el-menu-item index="AI求助">AI求助</el-menu-item>
-            </el-sub-menu>
-            <el-menu-item index="关于我">关于我</el-menu-item>
-          </el-menu>
-        </el-col>
-        <el-col :span="4" class="avater_name">
-          <div class="block">
-            <img class="touPic" src="/public/images/默认图像.png" />
-          </div>
-          <p style="margin-left: 10px">{{ store.state.userInfo.username }}</p>
-          <div class="lin">|</div>
-          <div class="out" @click="outLogin()">退出登录</div>
-        </el-col>
-      </el-row>
+    <div class="top">
+     <div class="mainTop">
+        <el-row>
+          <el-col :span="4"
+            ><div class="Icon">
+              <div class="name">好工作</div>
+            </div>
+          </el-col>
+          <el-col :span="16">
+            <el-menu
+              :default-active="activeIndex"
+              class="el-menu-demo"
+              mode="horizontal"
+              :ellipsis="false"
+              @select="handleSelect"
+            >
+              <el-menu-item index="首页">首页</el-menu-item>
+              <el-menu-item index="职位推荐">职位推荐</el-menu-item>
+              <el-menu-item index="职位搜索">职位搜索</el-menu-item>
+              <el-sub-menu index="4">
+                <template #title>求职服务</template>
+                <el-menu-item index="简历模版">简历模版</el-menu-item>
+                <el-menu-item index="AI求助">AI求助</el-menu-item>
+              </el-sub-menu>
+              <el-menu-item index="关于我">关于我</el-menu-item>
+            </el-menu>
+          </el-col>
+          <el-col :span="4" class="avater_name">
+            <div class="block">
+              <img class="touPic" src="/public/images/默认图像.png" />
+            </div>
+            <p style="margin-left: 10px">{{ store.state.userInfo.username }}</p>
+            <div class="lin">|</div>
+            <div class="out" @click="outLogin()">退出登录</div>
+          </el-col>
+        </el-row>
+      </div>
     </div>
+   
   </el-affix>
 </template>
 
@@ -100,8 +103,15 @@ const outLogin = () => {
 </script>
 
 <style lang="scss" scoped>
+.top{
+  background-color: #fff;
+  width: 100%;
+  height: fit-content;
+}
 .mainTop {
   background-color: #fff;
+  max-width: 1400px;
+  margin: 0 auto;
 }
 .Icon {
   margin-left: 20px;

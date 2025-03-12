@@ -155,11 +155,9 @@
       </el-row>
     </div>
     <button class="getMore" @click="lookMore()">查看更多</button>
-    <bottom></bottom>
   </div>
 </template>
 <script setup>
-import bottom from "@/components/bottom.vue";
 import search from "@/components/search.vue";
 import { ref, onMounted, } from "vue";
 import { useRouter } from "vue-router";

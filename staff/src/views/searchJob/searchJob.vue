@@ -1,6 +1,7 @@
 <template>
   <search @search="toSearch"></search>
-  <div class="kindBox">
+  <div style="width: 1250px;">
+    <div class="kindBox">
     <div class="selectTab">
       <div class="selectItem"
       v-for="(option, index) in options"
@@ -122,6 +123,8 @@
     </div>
   </div>
   <div class="getMoreBtn" @click="getMore()" v-if="!ifNoMore">更多职位</div>
+  </div>
+ 
   <backTop></backTop>
   <el-dialog
     v-model="centerDialogVisible"

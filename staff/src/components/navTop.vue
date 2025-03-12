@@ -1,20 +1,28 @@
 <template>
   <el-affix :offset="0">
-    <div class="top">
-      <div class="Icon">
-          <div class="name">好工作</div>
-          <p>haogongzou.com</p>     
+    <div class="bigBoxMain">
+      <div class="top">
+        <div class="Icon">
+            <div class="name">好工作</div>
+            <p>haogongzou.com</p>     
+        </div>
+        <div class="tips">好工作，工作就是好！</div>
       </div>
-      <div class="tips">好工作，工作就是好！</div>
     </div>
+
   </el-affix>
 </template>
 
 <style lang="scss" scoped>
+.bigBoxMain{
+ width: 100%;
+ background-color: #fff;
+}
 .top{
   display: flex;
-  width: 100%;
+  max-width: 1400px;
   height: 100px;
+  margin: 0 auto;
   margin-bottom: 10px;
   background-color: #fff;
 }

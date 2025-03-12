@@ -188,7 +188,7 @@ const ifChange = ()=>{
 .bigBox{
   display: flex;
   margin-top: 30px;
-  width: 100%;
+  width: 1300px;
 }
 .leftBox{
   height: fit-content;

@@ -13,7 +13,7 @@
   <li>3、职位推荐界面实现基础部分的功能-获取少量分类标签职位；</li>
   <li>4、职位搜索界面实现了多维度的分类查找职位功能、可按专业分类、职类分类、工作地点（可多选）、职位类型、学历要求、公司行业、公司规模进行数据筛选获取展示；</li>
   <li>5、关于我界面实现了用户简历的在线编辑功能，可编辑证件照、项目经历、求职意向等多栏信息</li>
-  <li>6、利用Pinia持久化操作优化项目，减少不必要的网络重复请求，保留用户浏览的职位界面状态与位置</li>
+  <li>6、利用Pinia和Vuex持久化操作优化项目，减少不必要的网络重复请求，保留用户浏览的职位界面状态与位置</li>
 </ul>
 <h4>鉴于数据库数据有限，给予项目运行获取数据指南以获取更好的项目体验：</h4>
 <ul>
@@ -25,19 +25,18 @@
 </ul>
 <div align="center"><h2>:tv:项目界面展示</h2></div>
 <h3>企业端界面展示：</h3>
-<img width="1000" src="Picture/companyLogin.png" />
-<img width="1000" src="Picture/companyHome1.png" />
-<img width="1000" src="Picture/companyHome2.png" />
-<img width="1000" src="Picture/jobCenter1.png" />
-<img width="1000" src="Picture/jobCenter2.png" />
+<img width="1000" src="Picture/登录.png" />
+<img width="1000" src="Picture/职位中心.png" />
+<img width="1000" src="Picture/发布职位.png" />
+<img width="1000" src="Picture/公司主页.png" />
 <h3>用户端界面展示：</h3>
-<img width="1000" src="Picture/staffHome1.png" />
-<img width="1000" src="Picture/staffHome2.png" />
-<img width="1000" src="Picture/staffSearch1.png" />
-<img width="1000" src="Picture/staffSearch2.png" />
-<img width="1000" src="Picture/staffSearch3.png" />
-<img width="1000" src="Picture/staffRecomend.png" />
-<img width="1000" src="Picture/staffAboutme.png" />
+<img width="1000" src="Picture/用户首页.png" />
+<img width="1000" src="Picture/职位推荐.png" />
+<img width="1000" src="Picture/职位搜索.png" />
+<img width="1000" src="Picture/职位详情.png" />
+<img width="1000" src="Picture/更多城市.png" />
+<img width="1000" src="Picture/个人简历.png" />
+<img width="1000" src="Picture/教育经历.png" />
 <hr>
 <h2>:alarm_clock:将持续更新的部分：</h2>
 <ul>

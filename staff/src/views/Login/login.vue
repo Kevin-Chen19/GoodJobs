@@ -1,58 +1,62 @@
 <template>
   <navTop/>
-  <div class="loginLine">
-    <el-carousel height="500px" :autoplay="false">
-      <el-carousel-item :key="1">
-        <div
-          class="imgs"
-          :style="{
-            backgroundImage: `url('/public/images/firstImg.jpg')`,
-          }"
-        ></div>
-      </el-carousel-item>
-    </el-carousel>
-    <div class="lgc">
-      <loginCard @ifRegister="ifRegister" :trueRegister="trueRegister"/>
+  <div class="container">
+      <div class="loginLine">
+      <el-carousel height="500px" :autoplay="false">
+        <el-carousel-item :key="1">
+          <div
+            class="imgs"
+            :style="{
+              backgroundImage: `url('/public/images/firstImg.jpg')`,
+            }"
+          ></div>
+        </el-carousel-item>
+      </el-carousel>
+      <div class="lgc">
+        <loginCard @ifRegister="ifRegister" :trueRegister="trueRegister"/>
+      </div>
+    </div>
+    <div class="lineIcon">
+      <el-row :gutter="20">
+      <el-col :span="4"></el-col>
+      <el-col :span="4"><img src="/public/icons/建筑.png" loading="lazy"><h4>高薪名企</h4><p>1000万+名企在线</p></el-col>
+      <el-col :span="4"><img src="/public/icons/入职.png" loading="lazy"><h4>极速入职</h4><p>快速约面试拿高薪</p></el-col>
+      <el-col :span="4"><img src="/public/icons/喇叭.png" loading="lazy"><h4>有投必应</h4><p>24小时极速反馈</p></el-col>
+      <el-col :span="4"><img src="/public/icons/权威认证.png" loading="lazy"><h4>行业权威</h4><p>3.74亿+职场人选择</p></el-col>
+      <el-col :span="4"></el-col>
+    </el-row>
+    </div>
+    <div class="jobType"
+    :style="{backgroundImage: `url('/public/images/work.png')`}">
+      <div class="blackCover"></div>
+      <div class="top">
+        <div>知名企业覆盖超1436万+</div>
+        <el-tabs v-model="activeName" class="demo-tabs">
+          <el-tab-pane label="IT互联网" name="first">
+            <img data-src="/public/images/IT互联网.png" class="lazy-image" />
+          </el-tab-pane>
+          <el-tab-pane label="制造业" name="second">
+            <img data-src="/public/images/制造业.png" class="lazy-image" />
+          </el-tab-pane>
+          <el-tab-pane label="房地产" name="third">
+            <img data-src="/public/images/房地产.png" class="lazy-image" />
+          </el-tab-pane>
+          <el-tab-pane label="消费品" name="fourth">
+            <img data-src="/public/images/消费品.png" class="lazy-image" />
+          </el-tab-pane>
+          <el-tab-pane label="金融" name="fifth">
+            <img data-src="/public/images/金融.png" class="lazy-image" />
+          </el-tab-pane>
+          <el-tab-pane label="服务业" name="sixth">
+            <img data-src="/public/images/服务业.png" class="lazy-image" />
+          </el-tab-pane>
+        </el-tabs>
+      </div>   
     </div>
   </div>
-  <div class="lineIcon">
-    <el-row :gutter="20">
-    <el-col :span="4"></el-col>
-    <el-col :span="4"><img src="/public/icons/建筑.png" loading="lazy"><h4>高薪名企</h4><p>1000万+名企在线</p></el-col>
-    <el-col :span="4"><img src="/public/icons/入职.png" loading="lazy"><h4>极速入职</h4><p>快速约面试拿高薪</p></el-col>
-    <el-col :span="4"><img src="/public/icons/喇叭.png" loading="lazy"><h4>有投必应</h4><p>24小时极速反馈</p></el-col>
-    <el-col :span="4"><img src="/public/icons/权威认证.png" loading="lazy"><h4>行业权威</h4><p>3.74亿+职场人选择</p></el-col>
-    <el-col :span="4"></el-col>
-  </el-row>
+  <div class="botm">
+    <bottom/>
   </div>
-  <div class="jobType"
-  :style="{backgroundImage: `url('/public/images/work.png')`}">
-    <div class="blackCover"></div>
-    <div class="top">
-      <div>知名企业覆盖超1436万+</div>
-      <el-tabs v-model="activeName" class="demo-tabs">
-        <el-tab-pane label="IT互联网" name="first">
-          <img data-src="/public/images/IT互联网.png" class="lazy-image" />
-        </el-tab-pane>
-        <el-tab-pane label="制造业" name="second">
-          <img data-src="/public/images/制造业.png" class="lazy-image" />
-        </el-tab-pane>
-        <el-tab-pane label="房地产" name="third">
-          <img data-src="/public/images/房地产.png" class="lazy-image" />
-        </el-tab-pane>
-        <el-tab-pane label="消费品" name="fourth">
-          <img data-src="/public/images/消费品.png" class="lazy-image" />
-        </el-tab-pane>
-        <el-tab-pane label="金融" name="fifth">
-          <img data-src="/public/images/金融.png" class="lazy-image" />
-        </el-tab-pane>
-        <el-tab-pane label="服务业" name="sixth">
-          <img data-src="/public/images/服务业.png" class="lazy-image" />
-        </el-tab-pane>
-      </el-tabs>
-    </div>   
-  </div>
-  <bottom/>
   <el-dialog
     v-model="dialogVisible"
     title="提示"
@@ -131,6 +135,10 @@ const initLazyLoading =()=> {
   })
 </script>
 <style lang="scss" scoped>
+.botm{
+  width: 100%;
+  background-color: black;
+}
 .loginLine {
   position: relative;
   .lgc {

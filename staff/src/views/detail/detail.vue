@@ -1,43 +1,44 @@
-<template>
-  <div class="topMess">
-    <div class="topLeft">
-      <div class="time"><img src="/public/icons/时钟.png" > {{ jobTime }}更新</div>
-      <div class="name"><h1>{{ job.jobName }}</h1><h3>{{ job.salary }}</h3></div>
-      <div class="tags">
-        <p>{{ job.address }}</p>
-        <p>{{ job.type }}</p>
-        <p v-for="item in job.tags">{{ item }}</p>
+<template >
+  <div style="width: 1200px;">
+      <div class="topMess">
+      <div class="topLeft">
+        <div class="time"><img src="/public/icons/时钟.png" > {{ jobTime }}更新</div>
+        <div class="name"><h1>{{ job.jobName }}</h1><h3>{{ job.salary }}</h3></div>
+        <div class="tags">
+          <p>{{ job.address }}</p>
+          <p>{{ job.type }}</p>
+          <p v-for="item in job.tags">{{ item }}</p>
+        </div>
+      </div>
+      <div class="topRight">
+        <div class="btn">立即投递</div>
       </div>
     </div>
-    <div class="topRight">
-      <div class="btn">立即投递</div>
+    <div class="mainBox">
+      <el-card class="otherMess">
+          <div class="ofOne">
+            <div class="otherTitle">职位描述：</div>
+            <div class="messages" v-html="formattedResponsibility"></div>
+          </div>
+          <div class="ofOne">
+            <div class="otherTitle">岗位要求：</div>
+            <div class="messages" v-html="formattedRequirements"></div>
+          </div>
+      </el-card>
+      <el-card class="boxRight">
+        <div class="companyLogo"><img :src="companyLogo" alt=""></div>
+        <h3>{{ job.companyMessage.companyName }}</h3>
+        <p>所属行业：{{ job.companyMessage.companyIndustry }}</p>
+        <p>企业规模：{{ job.companyMessage.staffNumber }}</p>
+        <div class="btns">查看企业详情</div>
+      </el-card>
     </div>
   </div>
-  <div class="mainBox">
-    <el-card class="otherMess">
-        <div class="ofOne">
-          <div class="otherTitle">职位描述：</div>
-          <div class="messages" v-html="formattedResponsibility"></div>
-        </div>
-        <div class="ofOne">
-          <div class="otherTitle">岗位要求：</div>
-          <div class="messages" v-html="formattedRequirements"></div>
-        </div>
-    </el-card>
-    <el-card class="boxRight">
-      <div class="companyLogo"><img :src="companyLogo" alt=""></div>
-      <h3>{{ job.companyMessage.companyName }}</h3>
-      <p>所属行业：{{ job.companyMessage.companyIndustry }}</p>
-      <p>企业规模：{{ job.companyMessage.staffNumber }}</p>
-      <div class="btns">查看企业详情</div>
-    </el-card>
-  </div>
+ 
   <backTop/>
-  <bottom></bottom>
 </template>
 <script setup>
 import backTop from '@/components/backTop.vue';
-import bottom from '@/components/bottom.vue';
 import { computed ,onMounted} from 'vue';
 import { useRoute } from 'vue-router';
 const route = useRoute();

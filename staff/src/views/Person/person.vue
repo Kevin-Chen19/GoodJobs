@@ -1,207 +1,210 @@
 <template>
-  <div class="topLine"><p>在线简历</p></div>
-  <div class="mainBox">
-    <div class="left" ref="containerRef">
-      <div class="first" id="part1">
-        <el-upload
-          class="upload-demo"
-          action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15"
-          :show-file-list="false"
-          :on-change="handleChange"
-          :auto-upload="false"
-        >
-          <div class="Avatar">
-            <img v-if="!personMessage.avator" src= "/public/images/默认证件.png" alt="" />
-            <img v-if="personMessage.avator" :src= "uploadAvatar"  />
-          </div>
-        </el-upload>
-        <div class="baseMess">
-          <div class="name_Edit">
-            <div class="name">{{ personMessage.name }}</div>
-            <div class="edit" @click="selects(1)">编辑</div>
-          </div>
-          <div class="personTags">
-            <p>{{ personMessage.sex }}</p>
-            <p class="col">|</p>
-            <p>{{ personMessage.age }}岁</p>
-            <p class="col">|</p>
-            <p>{{ personMessage.address }}</p>
-            <p class="col">|</p>
-            <p>{{ personMessage.status }}</p>
-          </div>
-          <div class="phone_Emil">
-            <p>手机：{{ personMessage.phone }}</p>
-            <p>邮箱：{{ personMessage.email }}</p>
-          </div>
-        </div>
-      </div>
-      <div class="MessageItem" id="part2">
-        <div class="itemTop">
-          <div class="title">
-            <img src="/public/icons/求职状态.png" />求职状态
-          </div>
-          <div class="edit" @click="selects(2)">编辑</div>
-        </div>
-        <div class="status">
-          {{
-            personMessage.jobStatus
-              ? personMessage.jobStatus[0] + "---" + personMessage.jobStatus[1]
-              : ""
-          }}
-        </div>
-      </div>
-      <div class="MessageItem" id="part3">
-        <div class="itemTop">
-          <div class="title">
-            <img src="/public/icons/教育经历.png" />教育经历
-          </div>
-          <div class="additems" @click="(selectSome = -1 , selects(0) )">+ 添加教育经历</div>
-        </div>
-        <div
-          class="educations"
-          v-for="(item, index) in personMessage.education"
-        >
-          <div class="scoo">{{ item.schoolName }}</div>
-          <div class="edub">
-            <div class="ttm">
-              <p>{{ item.eduBag }}</p>
-              <p class="col">|</p>
-              <p>{{ item.subject }}</p>
-              <p>{{ item.times[0] + "--" + item.times[1] }}</p>
+  <div style="width: 1200px;">
+      <div class="topLine"><p>在线简历</p></div>
+    <div class="mainBox">
+      <div class="left" ref="containerRef">
+        <div class="first" id="part1">
+          <el-upload
+            class="upload-demo"
+            action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15"
+            :show-file-list="false"
+            :on-change="handleChange"
+            :auto-upload="false"
+          >
+            <div class="Avatar">
+              <img v-if="!personMessage.avator" src= "/public/images/默认证件.png" alt="" />
+              <img v-if="personMessage.avator" :src= "uploadAvatar"  />
             </div>
-            <p class="edit1" @click="(selectSome = index , selects(0) )">编辑</p>
+          </el-upload>
+          <div class="baseMess">
+            <div class="name_Edit">
+              <div class="name">{{ personMessage.name }}</div>
+              <div class="edit" @click="selects(1)">编辑</div>
+            </div>
+            <div class="personTags">
+              <p>{{ personMessage.sex }}</p>
+              <p class="col">|</p>
+              <p>{{ personMessage.age }}岁</p>
+              <p class="col">|</p>
+              <p>{{ personMessage.address }}</p>
+              <p class="col">|</p>
+              <p>{{ personMessage.status }}</p>
+            </div>
+            <div class="phone_Emil">
+              <p>手机：{{ personMessage.phone }}</p>
+              <p>邮箱：{{ personMessage.email }}</p>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="MessageItem" id="part4">
-        <div class="itemTop">
-          <div class="title">
-            <img src="/public/icons/求职意向.png" />求职意向
+        <div class="MessageItem" id="part2">
+          <div class="itemTop">
+            <div class="title">
+              <img src="/public/icons/求职状态.png" />求职状态
+            </div>
+            <div class="edit" @click="selects(2)">编辑</div>
           </div>
-          <div class="edit" @click="selects(4)">编辑</div>
-        </div>
-        <div class="jobKinds">
-          <p>
+          <div class="status">
             {{
-              personMessage.jobKinds ? arrayString(personMessage.jobKinds) : ""
+              personMessage.jobStatus
+                ? personMessage.jobStatus[0] + "---" + personMessage.jobStatus[1]
+                : ""
             }}
+          </div>
+        </div>
+        <div class="MessageItem" id="part3">
+          <div class="itemTop">
+            <div class="title">
+              <img src="/public/icons/教育经历.png" />教育经历
+            </div>
+            <div class="additems" @click="(selectSome = -1 , selects(0) )">+ 添加教育经历</div>
+          </div>
+          <div
+            class="educations"
+            v-for="(item, index) in personMessage.education"
+          >
+            <div class="scoo">{{ item.schoolName }}</div>
+            <div class="edub">
+              <div class="ttm">
+                <p>{{ item.eduBag }}</p>
+                <p class="col">|</p>
+                <p>{{ item.subject }}</p>
+                <p>{{ item.times[0] + "--" + item.times[1] }}</p>
+              </div>
+              <p class="edit1" @click="(selectSome = index , selects(0) )">编辑</p>
+            </div>
+          </div>
+        </div>
+        <div class="MessageItem" id="part4">
+          <div class="itemTop">
+            <div class="title">
+              <img src="/public/icons/求职意向.png" />求职意向
+            </div>
+            <div class="edit" @click="selects(4)">编辑</div>
+          </div>
+          <div class="jobKinds">
+            <p>
+              {{
+                personMessage.jobKinds ? arrayString(personMessage.jobKinds) : ""
+              }}
+            </p>
+          </div>
+          <div class="jobRequest">
+            <div class="items">薪资要求：{{ personMessage.salary }}</div>
+            <div class="items">
+              期望城市：{{
+                personMessage.jobCity ? arrayString(personMessage.jobCity) : ""
+              }}
+            </div>
+            <div class="items">
+              工作性质：{{
+                personMessage.jobType ? arrayString(personMessage.jobType) : ""
+              }}
+            </div>
+          </div>
+        </div>
+        <div class="MessageItem" id="part5">
+          <div class="itemTop">
+            <div class="title">
+              <img src="/public/icons/个人优势.png" />个人优势
+            </div>
+            <div class="edit" @click="selects(5)">编辑</div>
+          </div>
+          <div class="introduction">{{ personMessage.introduction }}</div>
+        </div>
+        <div class="MessageItem" id="part6">
+          <div class="itemTop">
+            <div class="title">
+              <img src="/public/icons/工作经历.png" />工作/实习经历
+            </div>
+            <div class="additems" @click="(selectSome=-1,selects(6))">+ 添加工作经验</div>
+          </div>
+          <div
+            class="jobExperience"
+            v-for="(item, index) in personMessage.experience"
+            @mouseenter="hover(0)"
+            @mouseleave="outHover(0)"
+          >
+            <div class="company_time">
+              <p class="company">{{ item.companyName }}</p>
+              <p v-if="!hoverWitch[0]">{{ item.times[0] }}--{{ item.times[1] }}</p>
+              <p v-if="hoverWitch[0]" class="edit" @click="(selectSome=index , selects(6))">编辑</p>
+            </div>
+            <div class="jobKind_salary">
+              <p>{{ item.jobName }}</p>
+              <p class="col">|</p>
+              <p>{{ item.salary }}</p>
+            </div>
+            <div class="jobKind_salary">
+              <p>所属行业：{{ item.industry }}</p>
+              <p class="col">|</p>
+              <p>职位名称：{{ item.jobName }}</p>
+            </div>
+            <p>工作内容：</p>
+            <div class="workRole">{{ item.introduction }}</div>
+          </div>
+        </div>
+        <div class="MessageItem" id="part7">
+          <div class="itemTop">
+            <div class="title">
+              <img src="/public/icons/项目经历.png" />项目经历
+            </div>
+            <div class="additems" @click="(selectSome=-1, selects(7))">+ 添加项目经历</div>
+          </div>
+          <div
+            class="jobExperience"
+            v-for="(item, index) in personMessage.projects"
+            @mouseenter="hover(1)"
+            @mouseleave="outHover(1)"
+          >
+            <div class="company_time">
+              <p class="company">{{ item.projectsName }}</p>
+              <p v-if="!hoverWitch[1]">{{ item.times[0] }}--{{ item.times[1] }}</p>
+              <p v-if="hoverWitch[1]" class="edit" @click="(selectSome=index, selects(7))">编辑</p>
+            </div>
+            <p>项目描述：</p>
+            <div class="workRole">{{ item.introduction }}</div>
+          </div>
+        </div>
+        <div class="MessageItem" id="part8">
+          <div class="itemTop">
+            <div class="title">
+              <img src="/public/icons/证书荣誉.png" />证书荣誉
+            </div>
+            <div class="additems" @click="selects(3)">+ 添加荣誉证书</div>
+          </div>
+          <p class="honorary" v-for="(item, index) in personMessage.honorary">
+            {{ item }} <img src="/public/icons/删除.png"  @click="deleteHonorary(index)"/>
           </p>
         </div>
-        <div class="jobRequest">
-          <div class="items">薪资要求：{{ personMessage.salary }}</div>
-          <div class="items">
-            期望城市：{{
-              personMessage.jobCity ? arrayString(personMessage.jobCity) : ""
-            }}
-          </div>
-          <div class="items">
-            工作性质：{{
-              personMessage.jobType ? arrayString(personMessage.jobType) : ""
-            }}
-          </div>
-        </div>
       </div>
-      <div class="MessageItem" id="part5">
-        <div class="itemTop">
-          <div class="title">
-            <img src="/public/icons/个人优势.png" />个人优势
-          </div>
-          <div class="edit" @click="selects(5)">编辑</div>
+      <div class="right">
+        <div class="ai">
+          <h3>AI简历优化</h3>
+          <p>快速提升简历质量~</p>
+          <p>></p>
         </div>
-        <div class="introduction">{{ personMessage.introduction }}</div>
-      </div>
-      <div class="MessageItem" id="part6">
-        <div class="itemTop">
-          <div class="title">
-            <img src="/public/icons/工作经历.png" />工作/实习经历
-          </div>
-          <div class="additems" @click="(selectSome=-1,selects(6))">+ 添加工作经验</div>
+        <div class="menu">
+          <el-anchor
+            :container="containerRef"
+            direction="vertical"
+            type="default"
+            :offset="30"
+            @click="handleClick"
+          >
+            <el-anchor-link href="#part1" title="基本信息" />
+            <el-anchor-link href="#part2" title="求职状态" />
+            <el-anchor-link href="#part3" title="教育经历" />
+            <el-anchor-link href="#part4" title="求职意向" />
+            <el-anchor-link href="#part5" title="个人优势" />
+            <el-anchor-link href="#part6" title="工作/实习经历" />
+            <el-anchor-link href="#part7" title="项目经历" />
+            <el-anchor-link href="#part8" title="证书荣誉" />
+          </el-anchor>
         </div>
-        <div
-          class="jobExperience"
-          v-for="(item, index) in personMessage.experience"
-          @mouseenter="hover(0)"
-          @mouseleave="outHover(0)"
-        >
-          <div class="company_time">
-            <p class="company">{{ item.companyName }}</p>
-            <p v-if="!hoverWitch[0]">{{ item.times[0] }}--{{ item.times[1] }}</p>
-            <p v-if="hoverWitch[0]" class="edit" @click="(selectSome=index , selects(6))">编辑</p>
-          </div>
-          <div class="jobKind_salary">
-            <p>{{ item.jobName }}</p>
-            <p class="col">|</p>
-            <p>{{ item.salary }}</p>
-          </div>
-          <div class="jobKind_salary">
-            <p>所属行业：{{ item.industry }}</p>
-            <p class="col">|</p>
-            <p>职位名称：{{ item.jobName }}</p>
-          </div>
-          <p>工作内容：</p>
-          <div class="workRole">{{ item.introduction }}</div>
-        </div>
-      </div>
-      <div class="MessageItem" id="part7">
-        <div class="itemTop">
-          <div class="title">
-            <img src="/public/icons/项目经历.png" />项目经历
-          </div>
-          <div class="additems" @click="(selectSome=-1, selects(7))">+ 添加项目经历</div>
-        </div>
-        <div
-          class="jobExperience"
-          v-for="(item, index) in personMessage.projects"
-          @mouseenter="hover(1)"
-          @mouseleave="outHover(1)"
-        >
-          <div class="company_time">
-            <p class="company">{{ item.projectsName }}</p>
-            <p v-if="!hoverWitch[1]">{{ item.times[0] }}--{{ item.times[1] }}</p>
-            <p v-if="hoverWitch[1]" class="edit" @click="(selectSome=index, selects(7))">编辑</p>
-          </div>
-          <p>项目描述：</p>
-          <div class="workRole">{{ item.introduction }}</div>
-        </div>
-      </div>
-      <div class="MessageItem" id="part8">
-        <div class="itemTop">
-          <div class="title">
-            <img src="/public/icons/证书荣誉.png" />证书荣誉
-          </div>
-          <div class="additems" @click="selects(3)">+ 添加荣誉证书</div>
-        </div>
-        <p class="honorary" v-for="(item, index) in personMessage.honorary">
-          {{ item }} <img src="/public/icons/删除.png"  @click="deleteHonorary(index)"/>
-        </p>
-      </div>
-    </div>
-    <div class="right">
-      <div class="ai">
-        <h3>AI简历优化</h3>
-        <p>快速提升简历质量~</p>
-        <p>></p>
-      </div>
-      <div class="menu">
-        <el-anchor
-          :container="containerRef"
-          direction="vertical"
-          type="default"
-          :offset="30"
-          @click="handleClick"
-        >
-          <el-anchor-link href="#part1" title="基本信息" />
-          <el-anchor-link href="#part2" title="求职状态" />
-          <el-anchor-link href="#part3" title="教育经历" />
-          <el-anchor-link href="#part4" title="求职意向" />
-          <el-anchor-link href="#part5" title="个人优势" />
-          <el-anchor-link href="#part6" title="工作/实习经历" />
-          <el-anchor-link href="#part7" title="项目经历" />
-          <el-anchor-link href="#part8" title="证书荣誉" />
-        </el-anchor>
       </div>
     </div>
   </div>
+  
   <el-dialog v-model="centerDialogVisible" width="850" align-center>
     <education v-if="selectWhich === 0" :personMessage="personMessage"
     :index=selectSome @sbmitForm="refreshMessage"></education>
@@ -222,13 +225,11 @@
   </el-dialog>
   <backTop></backTop>
   <div style="height: 40px"></div>
-  <bottom></bottom>
 </template>
 
 <script setup>
 import { ref, reactive, onMounted ,computed ,defineAsyncComponent} from "vue";
 import backTop from "../../components/backTop.vue";
-const bottom = defineAsyncComponent(()=>import("@/components/bottom.vue"));
 const education = defineAsyncComponent(()=>import("@/components/personMessage/Education.vue"))
 const baseMess = defineAsyncComponent(()=>import("@/components/personMessage/baseMess.vue"))
 const jobStatusMess = defineAsyncComponent(()=>import("@/components/personMessage/jobStatusMess.vue"));
